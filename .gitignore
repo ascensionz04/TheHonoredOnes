@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.DS_Store
+# raw real-data downloads stay local; commit only derived summaries (TRD 6)
+data/raw/
