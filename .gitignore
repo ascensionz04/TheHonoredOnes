@@ -1,14 +1,26 @@
-.states
-.web
-*.py[cod]
-assets/external/
-*.db
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
 .pytest_cache/
 .venv/
-.DS_Store
 venv/
+
+# Node / Next.js
+/node_modules
+/.next/
+/out/
+/coverage
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+
+# Environment and deployment
+.env*
+.vercel
+
+# misc
+.DS_Store
+*.pem
 
 # The raw HospitalOPD log is never committed (it names individual doctors).
 # engine/calibrate.py downloads it here and writes only summary numbers.

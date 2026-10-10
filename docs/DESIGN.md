@@ -4,7 +4,7 @@
 **Status:** Draft v1, 10 October 2026
 **Related docs:** [PRD.md](PRD.md) (requirements), [TRD.md](TRD.md) (engine and data)
 
-This document specifies the single screen: its layout, its states, its exact wording and how it is built in Reflex.
+This document specifies the single screen: its layout, its states, its exact wording and how it is built in Next.js.
 
 ---
 
@@ -214,7 +214,7 @@ Filled only with numbers from the engine. One template per case.
 
 ## 6. Visual style
 
-The look is a modern SaaS console: white cards on a softly lit grey page, a translucent sticky navigation bar, one typeface, and colour reserved for status and for the one thing to do. A dark theme is one click away in the navigation bar. All values live as CSS variables in `assets/styles.css`; dark values are redefined under `html.dark`.
+The look is a modern SaaS console: white cards on a softly lit grey page, a translucent sticky navigation bar, one typeface, and colour reserved for status and for the one thing to do. A dark theme is one click away in the navigation bar. Colours are CSS variables in `src/app/globals.css` (shadcn/ui tokens plus brand and status colours), redefined under `.dark`.
 
 ### 6.1 Colour
 
@@ -291,27 +291,25 @@ Every step uses a control that is visible without scrolling on a laptop screen, 
 - Nothing depends on hover.
 - Text can be read from the back of a room when projected: the action sentence must be legible at presentation distance.
 
-## 10. Reflex implementation
+## 10. Implementation
+
+Next.js (App Router) with Tailwind CSS and shadcn/ui; components live in `src/components/dashboard/`.
 
 | Zone | Implementation |
 | --- | --- |
-| Page | `predictor/predictor.py`: `rx.App(theme=None)` with `assets/styles.css`; one route, `on_load` builds the first render |
-| Navigation | Brand, clinic clock, replay status pill, light/dark toggle (`rx.toggle_color_mode`) |
-| Replay bar | Four day chips, Play/Pause, step 5 min, speed segmented control, Reset, and a day timeline with a marker per applied move |
-| Pathway strip | Five tiles: wait now, 30-minute trend, wait meter against the limit, staff on duty, chance of passing the limit within the hour |
-| Action card | Band with deadline, station and chance chips, action, sentences, Apply, expected effect; Why? and What if? are closed `<details>` disclosures |
-| Calm, watch, closed, error | One note card with an icon per state |
-| Also watching | Side card, one button per alert; selecting one shows it in the action card |
-| Moves applied | Side card listing applied moves, with the with/without outcome for the day |
-| Why trust this? | Four metric cards from `eval/results.json`, with data and assumptions in a disclosure |
+| Navigation | `site-header.tsx`: brand, clinic clock, replay status, light/dark toggle (`next-themes`) |
+| Replay bar | `replay-controls.tsx`: four day buttons, Play/Pause, step 5 min, speed `ToggleGroup`, Reset, and a day timeline with a marker per applied move |
+| Pathway strip | `patient-flow.tsx`: five tiles with wait now, 30-minute trend, wait meter against the limit, staff on duty, chance of passing the limit within the hour |
+| Action card | `decision.tsx`: band with deadline, station and chance chips, action, sentences, Apply, expected effect; Why? and What if? are closed `Collapsible`s |
+| Calm, watch, closed, error | `decision.tsx`: one note card with an icon per state; errors offer Try again |
+| Also watching, Moves applied | `side-cards.tsx`; selecting an alert shows it in the action card; applying a move shows a toast |
+| Why trust this? | `trust-section.tsx`: metric cards from `eval/results.json`, with data and assumptions in a `Collapsible` |
 
-State (`predictor/state.py`): `day`, `clock`, `playing`, `speed`, `selected_station`, `applied`, and `screen`, a `view.Screen` rebuilt by `view.build()` after every change. Applied moves are kept server-side in `_actions`.
+Data flow: `src/hooks/use-replay.ts` holds `day`, `clock`, `playing`, `speed`, applied moves and the selected alert. For every change it fetches `/api/py/screen?day=...&clock=...&actions=id@minute,...&selected=...`, keeps showing the previous screen until the next arrives, and prefetches the next step while playing. Responses are cached in the browser and at the CDN, since the same inputs always give the same screen.
 
-Replay loop: Play starts a background event that sleeps for the speed's interval, adds 5 minutes to `clock`, rebuilds the screen and repeats until paused, reset or closing time. A loop counter stops stale loops when the day changes.
+`api/index.py` validates the input and calls `presenter/view.py`, the only module that calls `engine/api.py`. Every sentence on the card is built in Python by `presenter/wording.py`, from engine numbers only.
 
-`predictor/view.py` is the only module that calls `engine/api.py`. Calls are cached with `lru_cache`, since every engine function is deterministic for its inputs.
-
-Below 1100 px the side cards move under the action card; below 860 px the pathway strip becomes a vertical list.
+Below 1280 px the side cards move under the action card; below 768 px the pathway strip becomes a vertical list.
 
 ## 11. What this screen must not become
 
