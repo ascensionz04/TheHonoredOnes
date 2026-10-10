@@ -1,7 +1,13 @@
+.states
+.web
+*.py[cod]
+assets/external/
+*.db
 __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
+.DS_Store
 venv/
 
 # The raw HospitalOPD log is never committed (it names individual doctors).
