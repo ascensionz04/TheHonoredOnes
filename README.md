@@ -4,7 +4,7 @@
 
 Prototype use case: hospital outpatient services. Built for Track 1 (Predictive Model).
 
-**Live demo:** _add link_ · **Docs:** [PRD](docs/PRD.md) · [TRD](docs/TRD.md) · [Design](docs/DESIGN.md)
+**Live demo:** [bottleneck-predictor.vercel.app](https://bottleneck-predictor.vercel.app/) · **Docs:** [PRD](docs/PRD.md) · [TRD](docs/TRD.md) · [Design](docs/DESIGN.md)
 
 ---
 
@@ -44,8 +44,8 @@ It is one screen with no login. It is deliberately not a dashboard: the screen l
 Requires Python 3.11 or later and Node.js 20 or later.
 
 ```bash
-git clone <repo-url>
-cd <repo-folder>
+git clone https://github.com/wiiiren/TheHonoredOnes.git
+cd TheHonoredOnes
 pip install -r requirements-dev.txt
 npm install
 npm run dev
@@ -150,15 +150,15 @@ The raw file is not in this repository because it names individual doctors. Only
 
 `python eval/run_eval.py` writes `eval/results.json`. All results use the 20 held-out days.
 
-| Run | Question |
-| --- | --- |
-| Forecast accuracy | Is the forecast better than two simple baselines? |
-| Alert quality | Are alerts early and rarely wrong? |
-| Cause accuracy | Is the named cause the true one? |
-| Robustness | Does it hold up on noisy inputs and unseen two-cause days? |
-| Decision impact | Does following the tool beat a supervisor who reacts after the limit is passed? |
+| Run | Question | Result |
+| --- | --- | --- |
+| Forecast accuracy | Is the forecast better than two simple baselines? | Average error 60 minutes ahead is 1.6 minutes, against 2.5 for "the wait stays the same" and 2.3 for the usual wait at that time of day. When a station is busy (a wait of 10 minutes or more) the error is 9.9 minutes: well under "stays the same" (16.5) and level with the time-of-day average (9.8). |
+| Alert quality | Are alerts early and rarely wrong? | Of 17 breaches, 9 were flagged before the limit was passed (median warning 30 minutes), 5 only once over it, and 3 were missed. There were 0.7 false alarms a day, against 1.4 without the two-checks-in-a-row rule. |
+| Cause accuracy | Is the named cause the true one? | Right on all 5 scenario days that raised an alert. The other 5 scenario days raised no alert. |
+| Robustness | Does it hold up on noisy inputs and unseen two-cause days? | With noisy inputs it still flagged 9 of 17 breaches early and named the right cause on 6 of 6 days, but false alarms rose to 1.7 a day. On 12 unseen two-cause days it flagged 15 of 22 breaches early; on the 10 days with an alert it named one of the two true causes on 9 and "mixed" on 1. |
+| Decision impact | Does following the tool beat a supervisor who reacts after the limit is passed? | Total waiting was 359 hours with the tool, 396 reacting and 426 with a fixed roster, across 2,066 patients. The tool beat reacting on 9 days, matched it on 11 and lost on none, using 17 staff moves against 12. The share of patients waiting over 30 minutes was level with reacting (2.7% against 2.6%), and about half the fixed roster's 5.2%. |
 
-**Results:** _to be added once the evaluation has run._
+Against a reacting supervisor that is 1.9 waiting hours saved a day, or about 560 hours a year assuming 300 clinic days. Half the test days carry an injected disruption, so a real clinic's mix of good and bad days will differ.
 
 ## Assumptions and limits
 
@@ -172,7 +172,12 @@ A pilot would need one thing from a hospital: a timestamped event-log export fro
 
 ## Team
 
-_Add names and roles._
+**TheHonoredOnes**
+
+| Role | Name | Area |
+| --- | --- | --- |
+| Team leader | Yap Yu Hang | App and delivery |
+| Team member | Tan Wei Ren | Engine and evaluation |
 
 ## Acknowledgements
 
