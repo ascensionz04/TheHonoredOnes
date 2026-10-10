@@ -1,7 +1,8 @@
 """Service Bottleneck Predictor: the single screen (DESIGN.md).
 
-Zones, top to bottom: replay bar, pathway strip, action card, also watching,
-why trust this. The app imports only the six functions in engine/api.py.
+Zones, top to bottom: header with clinic time, replay controls, pathway strip,
+action card, also watching, why trust this. The app imports only the six
+functions in engine/api.py.
 """
 
 import json
@@ -153,10 +154,10 @@ def select_station(station):
 
 # ---------- header and 1 replay bar ----------
 
-cards.html(cards.header_html(LIMIT))
+cards.html(cards.header_html(LIMIT, ss.clock, ss.playing, CLOSE))
 
 with st.container(key="toolbar"):
-    bar = st.columns([2.2, 1.1, 2.6, 1.15, 1.2], vertical_alignment="center")
+    bar = st.columns([2.5, 1.05, 2.3, 1.05], vertical_alignment="center")
     bar[0].selectbox("Demo day", list(DEMO_DAYS), key="day", on_change=reset,
                      label_visibility="collapsed")
     bar[1].button("Pause" if ss.playing else "Play", on_click=toggle_play, width="stretch",
@@ -164,8 +165,6 @@ with st.container(key="toolbar"):
     bar[2].segmented_control("Speed", list(SPEEDS), key="speed", required=True,
                              label_visibility="collapsed", width="stretch")
     bar[3].button("Reset", on_click=reset, width="stretch", icon=":material/restart_alt:")
-    with bar[4]:
-        cards.html(cards.clock_html(ss.clock))
 
 day = DEMO_DAYS[ss.day]
 actions = tuple(ss.actions)
@@ -197,7 +196,7 @@ def status_of(station):
 # ---------- 2 pathway strip ----------
 
 statuses = {s: status_of(s) for s in STATIONS}
-cards.section_head("Patient flow", "Wait now, and expected in 30 minutes")
+cards.section_head("Patient flow", "Wait now, and the trend over the next 30 minutes")
 cards.html(cards.flow_html(state, fc, statuses, focus["station"] if focus else None))
 
 # ---------- 3 action card ----------
@@ -237,11 +236,13 @@ if ss.applied and ss.clock < CLOSE:
 
 rest = [a for a in alert_list if focus is None or a["station"] != focus["station"]]
 if rest and ss.clock < CLOSE:
-    cards.section_head(f"Also watching · {len(rest)}")
+    cards.section_head(f"Also watching ({len(rest)})")
     with st.container(key="watching"):
         for a in rest:
-            st.button(cards.watching_label(a, statuses[a["station"]]), key=f"watch_{a['station']}",
-                      on_click=select_station, args=(a["station"],), width="stretch")
+            status = statuses[a["station"]]
+            with st.container(key=f"wrow_{cards.watching_tone(status)}_{a['station']}"):
+                st.button(cards.watching_label(a, status), key=f"watch_{a['station']}",
+                          on_click=select_station, args=(a["station"],), width="stretch")
 
 # ---------- 5 why trust this? ----------
 
