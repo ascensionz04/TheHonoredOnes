@@ -75,7 +75,7 @@ Open the public link in a private window to confirm it loads with no login. Tag 
 
 ## Using the demo
 
-1. Pick a day: **Ordinary busy day**, **Doctor called away**, **Holiday rush** or **Pharmacy system slow**.
+1. Pick a day: **Ordinary busy day**, **Doctor called away**, **Holiday rush** or **Records system slow**.
 2. Press **Play**. The clinic replays in 5-minute steps from 08:00 to 16:00.
 3. When a card appears, read the action and its cause. Open **Why?** for the cause breakdown or **What if?** for other moves.
 4. Press **Apply** to make the move. The replay changes course and shows the day's outcome with and without it.

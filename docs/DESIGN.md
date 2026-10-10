@@ -263,9 +263,9 @@ Panels use a 16 px radius and a soft two-layer shadow; the action card has a 22 
 | Ordinary busy day | Normal | Mostly calm. A short spike at peak, a `watch`, no alert. Shows restraint. |
 | Doctor called away | Staffing gap at consultation, mid-morning | `will breach` at consultation while the current wait is still under the limit. Action: open the reserve room. Pharmacy flagged as next. |
 | Holiday rush | Demand surge from opening | Registration fills first, then the pressure moves to consultation. Shows the bottleneck moving. |
-| Pharmacy system slow | Slow processing at pharmacy, early afternoon | Cause is slow processing, not volume. Action: fast-track repeat prescriptions or move a clerk. |
+| Records system slow | Slow processing at consultation, mid-morning | Cause is slow processing, not volume. `will breach` at consultation while the current wait is still under the limit. Action: open the reserve room. |
 
-Pick the specific day for each from the 20 test days after the engine works, choosing ones where the story is clear.
+Pick the specific day for each from the 20 test days after the engine works, choosing ones where the story is clear. The slow-processing day is a tuning day, because no test day shows that cause cleanly.
 
 ## 8. Interaction flow
 

@@ -141,7 +141,7 @@ Priority: **M** = must have for the demo, **S** = should have, **C** = could hav
 | ID | Requirement | Priority | Acceptance criterion |
 | --- | --- | --- | --- |
 | FR-23 | Replay a stored day with play, pause, speed and reset | M | Runs 08:00 to 16:00 without error |
-| FR-24 | Offer four named demo days: ordinary busy day, doctor called away, holiday rush, pharmacy system slow | M | Each selectable by name |
+| FR-24 | Offer four named demo days: ordinary busy day, doctor called away, holiday rush, records system slow | M | Each selectable by name |
 | FR-25 | Show "No action needed" when there are no alerts | M | Visible for most of the ordinary busy day |
 
 ## 7. Non-functional requirements

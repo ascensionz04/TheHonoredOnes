@@ -1,6 +1,6 @@
 "use client"
 
-import { CalendarDays, Pause, Pill, Play, RotateCcw, SkipForward, UserX, Users, type LucideIcon } from "lucide-react"
+import { CalendarDays, Hourglass, Pause, Play, RotateCcw, SkipForward, UserX, Users, type LucideIcon } from "lucide-react"
 import { cn } from "cn"
 
 import { Button } from "@/components/ui/button"
@@ -13,7 +13,7 @@ const DAY_ICONS: Record<string, LucideIcon> = {
   "calendar-days": CalendarDays,
   "user-x": UserX,
   users: Users,
-  pill: Pill,
+  hourglass: Hourglass,
 }
 
 export function ReplayControls({ r }: { r: Replay }) {

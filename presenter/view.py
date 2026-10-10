@@ -39,10 +39,10 @@ DAY_META = {
     "Ordinary busy day": ("Normal day", "calendar-days"),
     "Doctor called away": ("Staffing gap", "user-x"),
     "Holiday rush": ("Demand surge", "users"),
-    "Pharmacy system slow": ("Slow processing", "pill"),
+    "Records system slow": ("Slow processing", "hourglass"),
 }
 DEFAULT_DEMO_DAYS = {"Ordinary busy day": 0, "Doctor called away": 1,
-                     "Holiday rush": 2, "Pharmacy system slow": 3}
+                     "Holiday rush": 2, "Records system slow": 3}
 SPEEDS = {"Slow": 1.0, "Normal": 0.5, "Fast": 0.2}  # seconds per 5-minute tick
 
 
