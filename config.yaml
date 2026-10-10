@@ -30,20 +30,28 @@ calibration:
   target_peak_util: 0.92
 
 # Raise on `ticks` consecutive checks at or above raise_at; clear after `ticks` below clear_at.
-# Tuned on the 10 tuning days by eval/tune_alerts.py (false-alarm budget: one per day).
-alert: {raise_at: 0.60, clear_at: 0.40, ticks: 2, false_alarm_budget_per_day: 1.0}
+# Chosen on the 10 tuning days by eval/tune_alerts.py (false-alarm budget: one per day);
+# the starting guess was 0.60 and 0.40. See eval/tuning.json for the sweep.
+alert: {raise_at: 0.30, clear_at: 0.20, ticks: 2, false_alarm_budget_per_day: 1.0}
 
 forecast: {runs: 30, horizons_min: [15, 30, 60], seed: 7}
 
-# Recent service speed = observed mean service time / usual, shrunk towards 1.0 with
-# `shrink_k` pseudo-observations (few completions say little) and clipped to `clip`.
-service_speed: {clip: [0.7, 2.0], shrink_k: 4}
+# Recent service speed = observed mean service time / usual. Treated as 1.0 unless the
+# evidence is clear (z-score at least min_z), then shrunk towards 1.0 with `shrink_k`
+# pseudo-observations (few completions say little) and clipped to `clip`. When averaging,
+# any single case is capped at cap_ratio x the usual time so one long case is not a slowdown.
+service_speed: {clip: [0.7, 2.0], shrink_k: 4, min_z: 1.75, cap_ratio: 2.5}
 
-diagnose: {mixed_ratio: 0.8, min_contribution_min: 3}
+# mixed when the second cause explains at least mixed_ratio of the first; peak_load when
+# no cause explains min_contribution_min. Patients already waiting are put down to a surge
+# only when recent arrivals are clearly above usual (z-score at least demand_min_z).
+diagnose: {mixed_ratio: 0.8, min_contribution_min: 3, demand_min_z: 2.0}
 
 # A move is recommended only if it cuts the target station's 60-minute wait by at least
-# min_gain_min, saves waiting overall, and leaves the donor below the watch level.
-recommend: {min_gain_min: 2.0, min_total_saved_patient_min: 1.0}
+# min_gain_min, saves at least min_total_saved_patient_min of waiting across the clinic,
+# and leaves its donor station comfortable: in 9 forecast runs out of 10 the donor's wait
+# stays under donor_max_wait_min for the whole hour.
+recommend: {min_gain_min: 2.0, min_total_saved_patient_min: 1.0, donor_max_wait_min: 20}
 
 action_duration_min: 60
 

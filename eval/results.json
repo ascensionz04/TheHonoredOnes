@@ -1,0 +1,583 @@
+{
+  "generated_at": "2026-10-10T08:13:01+00:00",
+  "data_mode": "calibrated",
+  "test_days": 20,
+  "wait_limit_min": 30.0,
+  "alerts": {
+    "days": 20,
+    "alerts": 28,
+    "breaches": 17,
+    "precision": 0.5,
+    "recall": 0.529,
+    "breaches_caught_early": 9,
+    "breaches_flagged_only_once_over": 5,
+    "breaches_missed": 3,
+    "median_warning_min": 30.0,
+    "false_alarms": 14,
+    "false_alarms_per_day": 0.7,
+    "false_alarms_per_day_no_rule": 1.35,
+    "no_rule": {
+      "alerts": 47,
+      "precision": 0.426,
+      "recall": 0.471,
+      "median_warning_min": 32.5,
+      "false_alarms_per_day": 1.35
+    },
+    "settings": {
+      "raise_at": 0.3,
+      "clear_at": 0.2,
+      "ticks": 2
+    }
+  },
+  "calibration": {
+    "note": "Arrival pattern and laboratory and imaging shares are measured from the real log. Service times, pharmacy share and staff numbers are assumptions: the log does not record them usably.",
+    "normal_days_simulated": 42,
+    "arrival_scale_factor": 0.7506,
+    "arrivals": {
+      "8": {
+        "real_per_hour": 4.08,
+        "real_scaled_per_hour": 3.12,
+        "sim_per_hour": 3.17
+      },
+      "9": {
+        "real_per_hour": 10.87,
+        "real_scaled_per_hour": 8.31,
+        "sim_per_hour": 8.07
+      },
+      "10": {
+        "real_per_hour": 25.01,
+        "real_scaled_per_hour": 19.12,
+        "sim_per_hour": 18.29
+      },
+      "11": {
+        "real_per_hour": 29.42,
+        "real_scaled_per_hour": 22.5,
+        "sim_per_hour": 22.43
+      },
+      "12": {
+        "real_per_hour": 24.63,
+        "real_scaled_per_hour": 18.84,
+        "sim_per_hour": 18.29
+      },
+      "13": {
+        "real_per_hour": 7.8,
+        "real_scaled_per_hour": 5.97,
+        "sim_per_hour": 6.1
+      },
+      "14": {
+        "real_per_hour": 9.19,
+        "real_scaled_per_hour": 7.02,
+        "sim_per_hour": 6.88
+      },
+      "15": {
+        "real_per_hour": 12.17,
+        "real_scaled_per_hour": 9.3,
+        "sim_per_hour": 9.26
+      }
+    },
+    "shares": {
+      "laboratory": {
+        "real": 0.1312,
+        "sim": 0.1304
+      },
+      "imaging": {
+        "real": 0.1229,
+        "sim": 0.1247
+      }
+    },
+    "registration": {
+      "real_service_min": null,
+      "sim_service_min": 4.03,
+      "config_service_min": 4.0
+    },
+    "consultation": {
+      "real_service_min": null,
+      "sim_service_min": 10.14,
+      "config_service_min": 10.0
+    },
+    "laboratory": {
+      "real_service_min": null,
+      "sim_service_min": 6.19,
+      "config_service_min": 6.0
+    },
+    "imaging": {
+      "real_service_min": null,
+      "sim_service_min": 11.65,
+      "config_service_min": 12.0
+    },
+    "pharmacy": {
+      "real_service_min": null,
+      "sim_service_min": 6.98,
+      "config_service_min": 7.0
+    },
+    "wait_to_doctor": {
+      "real_median_min": 27.0,
+      "real_share_over_30": 0.461,
+      "sim_median_min": 6.0,
+      "sim_share_over_30": 0.048,
+      "note": "Not a calibration target. The simulated clinic is sized so normal days are calm; the real clinic's waits are far longer."
+    },
+    "consult_cycle_proxy_min": {
+      "definition": "gap between a doctor's consecutive prescriptions, 1 to 60 min",
+      "median": 9.0,
+      "mean": 12.9
+    }
+  },
+  "forecast": {
+    "30": {
+      "normal": {
+        "model": 1.25,
+        "persistence": 1.76,
+        "time_of_day": 2.06,
+        "busy": {
+          "model": 8.91,
+          "persistence": 13.07,
+          "time_of_day": 9.4
+        },
+        "busy_share": 0.096
+      },
+      "scenario": {
+        "model": 1.39,
+        "persistence": 1.96,
+        "time_of_day": 2.48,
+        "busy": {
+          "model": 9.4,
+          "persistence": 13.34,
+          "time_of_day": 11.89
+        },
+        "busy_share": 0.113
+      },
+      "all": {
+        "model": 1.32,
+        "persistence": 1.86,
+        "time_of_day": 2.27,
+        "busy": {
+          "model": 9.18,
+          "persistence": 13.21,
+          "time_of_day": 10.75
+        },
+        "busy_share": 0.105
+      },
+      "model": 1.32,
+      "persistence": 1.86,
+      "time_of_day": 2.27,
+      "busy": {
+        "model": 9.18,
+        "persistence": 13.21,
+        "time_of_day": 10.75
+      },
+      "busy_share": 0.105
+    },
+    "60": {
+      "normal": {
+        "model": 1.39,
+        "persistence": 2.27,
+        "time_of_day": 2.06,
+        "busy": {
+          "model": 8.49,
+          "persistence": 15.59,
+          "time_of_day": 8.49
+        },
+        "busy_share": 0.109
+      },
+      "scenario": {
+        "model": 1.75,
+        "persistence": 2.7,
+        "time_of_day": 2.48,
+        "busy": {
+          "model": 11.11,
+          "persistence": 17.36,
+          "time_of_day": 10.89
+        },
+        "busy_share": 0.126
+      },
+      "all": {
+        "model": 1.57,
+        "persistence": 2.48,
+        "time_of_day": 2.27,
+        "busy": {
+          "model": 9.89,
+          "persistence": 16.54,
+          "time_of_day": 9.78
+        },
+        "busy_share": 0.117
+      },
+      "model": 1.57,
+      "persistence": 2.48,
+      "time_of_day": 2.27,
+      "busy": {
+        "model": 9.89,
+        "persistence": 16.54,
+        "time_of_day": 9.78
+      },
+      "busy_share": 0.117
+    }
+  },
+  "cause": {
+    "scenario_days": 10,
+    "days_with_alert": 5,
+    "correct": 5,
+    "accuracy": 1.0,
+    "confusion": {
+      "demand_surge": {
+        "demand_surge": 1,
+        "staffing_gap": 0,
+        "slow_processing": 0,
+        "mixed": 0,
+        "peak_load": 0,
+        "no_alert": 2
+      },
+      "slow_processing": {
+        "demand_surge": 0,
+        "staffing_gap": 0,
+        "slow_processing": 1,
+        "mixed": 0,
+        "peak_load": 0,
+        "no_alert": 3
+      },
+      "staffing_gap": {
+        "demand_surge": 0,
+        "staffing_gap": 3,
+        "slow_processing": 0,
+        "mixed": 0,
+        "peak_load": 0,
+        "no_alert": 0
+      }
+    }
+  },
+  "robustness": {
+    "noisy": {
+      "forecast": {
+        "30": {
+          "normal": {
+            "model": 1.57,
+            "persistence": 4.26,
+            "time_of_day": 2.06,
+            "busy": {
+              "model": 5.46,
+              "persistence": 14.4,
+              "time_of_day": 4.93
+            },
+            "busy_share": 0.204
+          },
+          "scenario": {
+            "model": 1.69,
+            "persistence": 4.6,
+            "time_of_day": 2.48,
+            "busy": {
+              "model": 5.83,
+              "persistence": 14.78,
+              "time_of_day": 6.4
+            },
+            "busy_share": 0.226
+          },
+          "all": {
+            "model": 1.63,
+            "persistence": 4.43,
+            "time_of_day": 2.27,
+            "busy": {
+              "model": 5.65,
+              "persistence": 14.6,
+              "time_of_day": 5.71
+            },
+            "busy_share": 0.215
+          },
+          "model": 1.63,
+          "persistence": 4.43,
+          "time_of_day": 2.27,
+          "busy": {
+            "model": 5.65,
+            "persistence": 14.6,
+            "time_of_day": 5.71
+          },
+          "busy_share": 0.215
+        },
+        "60": {
+          "normal": {
+            "model": 1.59,
+            "persistence": 4.64,
+            "time_of_day": 2.06,
+            "busy": {
+              "model": 5.13,
+              "persistence": 15.57,
+              "time_of_day": 4.78
+            },
+            "busy_share": 0.214
+          },
+          "scenario": {
+            "model": 1.86,
+            "persistence": 5.24,
+            "time_of_day": 2.48,
+            "busy": {
+              "model": 6.17,
+              "persistence": 16.61,
+              "time_of_day": 6.17
+            },
+            "busy_share": 0.238
+          },
+          "all": {
+            "model": 1.72,
+            "persistence": 4.94,
+            "time_of_day": 2.27,
+            "busy": {
+              "model": 5.68,
+              "persistence": 16.12,
+              "time_of_day": 5.51
+            },
+            "busy_share": 0.226
+          },
+          "model": 1.72,
+          "persistence": 4.94,
+          "time_of_day": 2.27,
+          "busy": {
+            "model": 5.68,
+            "persistence": 16.12,
+            "time_of_day": 5.51
+          },
+          "busy_share": 0.226
+        }
+      },
+      "alerts": {
+        "days": 20,
+        "alerts": 46,
+        "breaches": 17,
+        "precision": 0.283,
+        "recall": 0.529,
+        "breaches_caught_early": 9,
+        "breaches_flagged_only_once_over": 4,
+        "breaches_missed": 4,
+        "median_warning_min": 25.0,
+        "false_alarms": 33,
+        "false_alarms_per_day": 1.65,
+        "false_alarms_per_day_no_rule": 7.1,
+        "no_rule": {
+          "alerts": 173,
+          "precision": 0.179,
+          "recall": 0.647,
+          "median_warning_min": 30.0,
+          "false_alarms_per_day": 7.1
+        },
+        "settings": {
+          "raise_at": 0.3,
+          "clear_at": 0.2,
+          "ticks": 2
+        }
+      },
+      "cause": {
+        "scenario_days": 10,
+        "days_with_alert": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "confusion": {
+          "demand_surge": {
+            "demand_surge": 1,
+            "staffing_gap": 0,
+            "slow_processing": 0,
+            "mixed": 0,
+            "peak_load": 0,
+            "no_alert": 2
+          },
+          "slow_processing": {
+            "demand_surge": 0,
+            "staffing_gap": 0,
+            "slow_processing": 2,
+            "mixed": 0,
+            "peak_load": 0,
+            "no_alert": 2
+          },
+          "staffing_gap": {
+            "demand_surge": 0,
+            "staffing_gap": 3,
+            "slow_processing": 0,
+            "mixed": 0,
+            "peak_load": 0,
+            "no_alert": 0
+          }
+        }
+      }
+    },
+    "two_cause": {
+      "days": 12,
+      "forecast": {
+        "30": {
+          "scenario": {
+            "model": 2.18,
+            "persistence": 2.99,
+            "time_of_day": 4.5,
+            "busy": {
+              "model": 10.54,
+              "persistence": 14.3,
+              "time_of_day": 19.73
+            },
+            "busy_share": 0.18
+          },
+          "all": {
+            "model": 2.18,
+            "persistence": 2.99,
+            "time_of_day": 4.5,
+            "busy": {
+              "model": 10.54,
+              "persistence": 14.3,
+              "time_of_day": 19.73
+            },
+            "busy_share": 0.18
+          },
+          "model": 2.18,
+          "persistence": 2.99,
+          "time_of_day": 4.5,
+          "busy": {
+            "model": 10.54,
+            "persistence": 14.3,
+            "time_of_day": 19.73
+          },
+          "busy_share": 0.18
+        },
+        "60": {
+          "scenario": {
+            "model": 3.07,
+            "persistence": 4.49,
+            "time_of_day": 4.51,
+            "busy": {
+              "model": 13.44,
+              "persistence": 19.81,
+              "time_of_day": 17.55
+            },
+            "busy_share": 0.204
+          },
+          "all": {
+            "model": 3.07,
+            "persistence": 4.49,
+            "time_of_day": 4.51,
+            "busy": {
+              "model": 13.44,
+              "persistence": 19.81,
+              "time_of_day": 17.55
+            },
+            "busy_share": 0.204
+          },
+          "model": 3.07,
+          "persistence": 4.49,
+          "time_of_day": 4.51,
+          "busy": {
+            "model": 13.44,
+            "persistence": 19.81,
+            "time_of_day": 17.55
+          },
+          "busy_share": 0.204
+        }
+      },
+      "alerts": {
+        "days": 12,
+        "alerts": 28,
+        "breaches": 22,
+        "precision": 0.5,
+        "recall": 0.682,
+        "breaches_caught_early": 15,
+        "breaches_flagged_only_once_over": 4,
+        "breaches_missed": 3,
+        "median_warning_min": 50.0,
+        "false_alarms": 14,
+        "false_alarms_per_day": 1.17,
+        "false_alarms_per_day_no_rule": 2.0,
+        "no_rule": {
+          "alerts": 46,
+          "precision": 0.478,
+          "recall": 0.818,
+          "median_warning_min": 22.5,
+          "false_alarms_per_day": 2.0
+        },
+        "settings": {
+          "raise_at": 0.3,
+          "clear_at": 0.2,
+          "ticks": 2
+        }
+      },
+      "cause": {
+        "scenario_days": 12,
+        "days_with_alert": 10,
+        "correct": 10,
+        "accuracy": 1.0,
+        "confusion": {
+          "demand_surge+staffing_gap": {
+            "demand_surge": 0,
+            "staffing_gap": 3,
+            "slow_processing": 0,
+            "mixed": 0,
+            "peak_load": 0,
+            "no_alert": 1
+          },
+          "demand_surge+slow_processing": {
+            "demand_surge": 4,
+            "staffing_gap": 0,
+            "slow_processing": 0,
+            "mixed": 0,
+            "peak_load": 0,
+            "no_alert": 0
+          },
+          "staffing_gap+slow_processing": {
+            "demand_surge": 0,
+            "staffing_gap": 2,
+            "slow_processing": 0,
+            "mixed": 1,
+            "peak_load": 0,
+            "no_alert": 1
+          }
+        }
+      }
+    }
+  },
+  "policy": {
+    "fixed": {
+      "share_over_30": 0.0523,
+      "total_wait_hours": 425.7,
+      "wait_hours_per_day": 21.28,
+      "moves": 0,
+      "moves_per_day": 0.0,
+      "patients": 2066
+    },
+    "reactive": {
+      "share_over_30": 0.0261,
+      "total_wait_hours": 396.0,
+      "wait_hours_per_day": 19.8,
+      "moves": 12,
+      "moves_per_day": 0.6,
+      "patients": 2066
+    },
+    "tool": {
+      "share_over_30": 0.03,
+      "total_wait_hours": 364.3,
+      "wait_hours_per_day": 18.22,
+      "moves": 18,
+      "moves_per_day": 0.9,
+      "patients": 2066
+    },
+    "tool_vs_reactive": {
+      "days_tool_better": 8,
+      "days_tool_worse": 0,
+      "days_equal": 12
+    }
+  },
+  "impact": {
+    "wait_hours_saved_per_day_vs_reactive": 1.58,
+    "wait_hours_saved_per_day_vs_fixed": 3.06,
+    "clinic_days_per_year_assumed": 300,
+    "wait_hours_saved_per_year_vs_reactive": 474,
+    "note": "Per-day figures are averages over the 20 test days, half of which carry an injected disruption; a real clinic's mix of good and bad days will differ."
+  },
+  "assumptions": [
+    "Results are from simulated clinic days, not a live clinic.",
+    "Arrival pattern by hour and weekday, and the laboratory and imaging shares, are measured from the HospitalOPD log (19214 visits on 156 days, 2025-09-01 to 2026-03-01, timestamps shifted from UTC to UTC+5).",
+    "Real arrivals are scaled by 0.7506 so that the assumed 4-doctor clinic is 92% busy in the peak hour of an average weekday.",
+    "Staff numbers are assumed: 2 at registration, 4 at consultation, 1 at laboratory, 1 at imaging, 2 at pharmacy.",
+    "Average service times are assumed: registration 4 min, consultation 10 min, laboratory 6 min, imaging 12 min, pharmacy 7 min.",
+    "65% of patients are assumed to visit the pharmacy.",
+    "The four allowed moves are assumed, and a moved staff member works at full speed at once.",
+    "Each move lasts 60 minutes. The float nurse and on-call doctor are assumed available.",
+    "Patients do not leave the queue, so the cost of leaving without care is not measured.",
+    "A breach is the wait estimate (patients waiting x current service time / staff) passing 30 minutes.",
+    "Disruptions are injected in the busy part of the day (starting 09:30 to 11:30).",
+    "The reactive supervisor moves staff only after a wait has passed the limit, and does not take a clerk from a registration desk that is more than half way to the limit.",
+    "Station weights used only to rank alerts: {'registration': 1.0, 'consultation': 1.5, 'laboratory': 1.0, 'imaging': 1.0, 'pharmacy': 1.2}."
+  ],
+  "runtime_seconds": 76.1
+}

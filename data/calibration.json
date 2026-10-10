@@ -1,0 +1,98 @@
+{
+  "source": {
+    "name": "HospitalOPD event log",
+    "repository": "Mendeley Data",
+    "doi": "10.17632/j2hd2239dr.1",
+    "licence": "CC BY 4.0",
+    "url": "https://data.mendeley.com/datasets/j2hd2239dr/1",
+    "sha256": "07d0096b6e3fcff78f94afa6d5aeffeeb2566f59902eccc03da209a3b6502720",
+    "rows": 62422,
+    "visits": 49912
+  },
+  "method": {
+    "utc_offset_hours": 5,
+    "window": [
+      "2025-09-01",
+      "2026-03-01"
+    ],
+    "weekdays": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "clinic_hours_local": [
+      "08:00",
+      "16:00"
+    ],
+    "days_used": 156,
+    "visits_used": 19214,
+    "scale_rule": "arrivals scaled so consultation (4 doctors, 10 min) is 92% busy in the peak hour of an average weekday"
+  },
+  "arrival_scale_factor": 0.7506,
+  "arrivals_per_hour": {
+    "8": 3.06,
+    "9": 8.16,
+    "10": 18.77,
+    "11": 22.08,
+    "12": 18.49,
+    "13": 5.86,
+    "14": 6.89,
+    "15": 9.13
+  },
+  "weekday_factor": {
+    "0": 1.304,
+    "1": 1.08,
+    "2": 1.055,
+    "3": 0.943,
+    "4": 0.748,
+    "5": 0.87
+  },
+  "share": {
+    "laboratory": 0.1312,
+    "imaging": 0.1229
+  },
+  "lab_and_imaging_share": 0.0379,
+  "real": {
+    "arrivals_per_hour": {
+      "8": 4.08,
+      "9": 10.87,
+      "10": 25.01,
+      "11": 29.42,
+      "12": 24.63,
+      "13": 7.8,
+      "14": 9.19,
+      "15": 12.17
+    },
+    "visits_per_day": 123.2,
+    "visits_per_day_by_weekday": {
+      "0": 160.7,
+      "1": 133.0,
+      "2": 130.0,
+      "3": 116.1,
+      "4": 92.1,
+      "5": 107.2
+    },
+    "doctors_per_day_median": 18.0,
+    "wait_to_doctor": {
+      "definition": "appointment_start_datetime to prescription_start_datetime",
+      "visits": 19118,
+      "median_min": 27.0,
+      "share_over_30": 0.461,
+      "share_over_60": 0.238
+    },
+    "consult_cycle_proxy_min": {
+      "definition": "gap between a doctor's consecutive prescriptions, 1 to 60 min",
+      "median": 9.0,
+      "mean": 12.9
+    },
+    "pharmacy_share_recorded": 0.0012
+  },
+  "not_calibrated": {
+    "service_min": "no usable service durations in the log; config values are assumptions",
+    "pharmacy share": "pharmacy is recorded for under 1% of visits; config value is an assumption",
+    "staff": "only doctors are identified, across many specialties; config values are assumptions"
+  }
+}

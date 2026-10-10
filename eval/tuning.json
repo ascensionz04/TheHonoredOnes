@@ -1,0 +1,113 @@
+{
+  "tuning_days": [
+    4,
+    5,
+    8,
+    23,
+    29,
+    41,
+    63,
+    65,
+    81,
+    84
+  ],
+  "false_alarm_budget_per_day": 1.0,
+  "sweep": [
+    {
+      "raise_at": 0.2,
+      "clear_at": 0.13,
+      "ticks": 2,
+      "alerts": 10,
+      "breaches": 7,
+      "breaches_caught_early": 5,
+      "recall": 0.714,
+      "precision": 0.6,
+      "median_warning_min": 40.0,
+      "false_alarms_per_day": 0.4
+    },
+    {
+      "raise_at": 0.3,
+      "clear_at": 0.2,
+      "ticks": 2,
+      "alerts": 7,
+      "breaches": 7,
+      "breaches_caught_early": 5,
+      "recall": 0.714,
+      "precision": 0.857,
+      "median_warning_min": 35.0,
+      "false_alarms_per_day": 0.1
+    },
+    {
+      "raise_at": 0.4,
+      "clear_at": 0.27,
+      "ticks": 2,
+      "alerts": 7,
+      "breaches": 7,
+      "breaches_caught_early": 4,
+      "recall": 0.571,
+      "precision": 0.857,
+      "median_warning_min": 22.5,
+      "false_alarms_per_day": 0.1
+    },
+    {
+      "raise_at": 0.5,
+      "clear_at": 0.33,
+      "ticks": 2,
+      "alerts": 7,
+      "breaches": 7,
+      "breaches_caught_early": 4,
+      "recall": 0.571,
+      "precision": 0.857,
+      "median_warning_min": 17.5,
+      "false_alarms_per_day": 0.1
+    },
+    {
+      "raise_at": 0.6,
+      "clear_at": 0.4,
+      "ticks": 2,
+      "alerts": 7,
+      "breaches": 7,
+      "breaches_caught_early": 3,
+      "recall": 0.429,
+      "precision": 0.857,
+      "median_warning_min": 25.0,
+      "false_alarms_per_day": 0.1
+    },
+    {
+      "raise_at": 0.7,
+      "clear_at": 0.47,
+      "ticks": 2,
+      "alerts": 7,
+      "breaches": 7,
+      "breaches_caught_early": 3,
+      "recall": 0.429,
+      "precision": 0.857,
+      "median_warning_min": 20.0,
+      "false_alarms_per_day": 0.1
+    },
+    {
+      "raise_at": 0.8,
+      "clear_at": 0.53,
+      "ticks": 2,
+      "alerts": 7,
+      "breaches": 7,
+      "breaches_caught_early": 3,
+      "recall": 0.429,
+      "precision": 0.857,
+      "median_warning_min": 10.0,
+      "false_alarms_per_day": 0.1
+    }
+  ],
+  "chosen": {
+    "raise_at": 0.3,
+    "clear_at": 0.2,
+    "ticks": 2,
+    "alerts": 7,
+    "breaches": 7,
+    "breaches_caught_early": 5,
+    "recall": 0.714,
+    "precision": 0.857,
+    "median_warning_min": 35.0,
+    "false_alarms_per_day": 0.1
+  }
+}

@@ -1,0 +1,1106 @@
+[
+ {
+  "day": 0,
+  "seed": 1510795976,
+  "weekday": 0,
+  "split": "test",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 1,
+  "seed": 1953721280,
+  "weekday": 1,
+  "split": "test",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "09:30",
+    "duration": 75,
+    "strength": 1.9
+   }
+  ]
+ },
+ {
+  "day": 2,
+  "seed": 1967840212,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "10:55",
+    "duration": 80,
+    "strength": 1.89
+   }
+  ]
+ },
+ {
+  "day": 3,
+  "seed": 1736390515,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 4,
+  "seed": 503782483,
+  "weekday": 4,
+  "split": "tune",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "11:05",
+    "duration": 85,
+    "strength": 1.79
+   }
+  ]
+ },
+ {
+  "day": 5,
+  "seed": 1470936274,
+  "weekday": 5,
+  "split": "tune",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "pharmacy",
+    "start": "09:55",
+    "duration": 75,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 6,
+  "seed": 1614884332,
+  "weekday": 0,
+  "split": "test",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "imaging",
+    "start": "11:10",
+    "duration": 75,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 7,
+  "seed": 1367077916,
+  "weekday": 1,
+  "split": "test",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 8,
+  "seed": 1052911170,
+  "weekday": 2,
+  "split": "tune",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "consultation",
+    "start": "10:10",
+    "duration": 65,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 9,
+  "seed": 1263579785,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "09:30",
+    "duration": 65,
+    "strength": 1.68
+   }
+  ]
+ },
+ {
+  "day": 10,
+  "seed": 924597395,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 11,
+  "seed": 1398863051,
+  "weekday": 5,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "pharmacy",
+    "start": "10:15",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 12,
+  "seed": 1429970765,
+  "weekday": 0,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "pharmacy",
+    "start": "09:30",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 13,
+  "seed": 1868451390,
+  "weekday": 1,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "10:40",
+    "duration": 80,
+    "strength": 1.84
+   }
+  ]
+ },
+ {
+  "day": 14,
+  "seed": 1550653827,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "11:20",
+    "duration": 90,
+    "strength": 1.77
+   }
+  ]
+ },
+ {
+  "day": 15,
+  "seed": 1176929062,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "consultation",
+    "start": "10:40",
+    "duration": 65,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 16,
+  "seed": 189026053,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "11:00",
+    "duration": 75,
+    "strength": 1.61
+   }
+  ]
+ },
+ {
+  "day": 17,
+  "seed": 616796851,
+  "weekday": 5,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 18,
+  "seed": 1539477188,
+  "weekday": 0,
+  "split": "train",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "imaging",
+    "start": "10:30",
+    "duration": 90,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 19,
+  "seed": 1645384631,
+  "weekday": 1,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 20,
+  "seed": 1018503654,
+  "weekday": 2,
+  "split": "test",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "consultation",
+    "start": "10:00",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 21,
+  "seed": 1453489166,
+  "weekday": 3,
+  "split": "test",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "09:45",
+    "duration": 75,
+    "strength": 1.79
+   }
+  ]
+ },
+ {
+  "day": 22,
+  "seed": 1112023919,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 23,
+  "seed": 875426466,
+  "weekday": 5,
+  "split": "tune",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 24,
+  "seed": 1469895544,
+  "weekday": 0,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 25,
+  "seed": 300071943,
+  "weekday": 1,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 26,
+  "seed": 3426473,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 27,
+  "seed": 1644716485,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 28,
+  "seed": 1477636696,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 29,
+  "seed": 2001837207,
+  "weekday": 5,
+  "split": "tune",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "pharmacy",
+    "start": "10:15",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 30,
+  "seed": 225249974,
+  "weekday": 0,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 31,
+  "seed": 728823900,
+  "weekday": 1,
+  "split": "train",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "consultation",
+    "start": "09:45",
+    "duration": 80,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 32,
+  "seed": 859515794,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "10:50",
+    "duration": 90,
+    "strength": 1.62
+   }
+  ]
+ },
+ {
+  "day": 33,
+  "seed": 747282447,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "registration",
+    "start": "10:20",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 34,
+  "seed": 1247548417,
+  "weekday": 4,
+  "split": "test",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 35,
+  "seed": 250812745,
+  "weekday": 5,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "10:05",
+    "duration": 65,
+    "strength": 1.69
+   }
+  ]
+ },
+ {
+  "day": 36,
+  "seed": 56855496,
+  "weekday": 0,
+  "split": "test",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 37,
+  "seed": 1889956663,
+  "weekday": 1,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 38,
+  "seed": 1996819820,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "consultation",
+    "start": "10:55",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 39,
+  "seed": 300872687,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 40,
+  "seed": 1995844656,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "pharmacy",
+    "start": "11:05",
+    "duration": 90,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 41,
+  "seed": 7111467,
+  "weekday": 5,
+  "split": "tune",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "consultation",
+    "start": "10:55",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 42,
+  "seed": 616660563,
+  "weekday": 0,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 43,
+  "seed": 1287974285,
+  "weekday": 1,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 44,
+  "seed": 1068241647,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "pharmacy",
+    "start": "11:20",
+    "duration": 90,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 45,
+  "seed": 1223950339,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 46,
+  "seed": 922305901,
+  "weekday": 4,
+  "split": "test",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "pharmacy",
+    "start": "10:25",
+    "duration": 80,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 47,
+  "seed": 270460686,
+  "weekday": 5,
+  "split": "train",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "consultation",
+    "start": "10:15",
+    "duration": 80,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 48,
+  "seed": 621223459,
+  "weekday": 0,
+  "split": "test",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 49,
+  "seed": 1360656079,
+  "weekday": 1,
+  "split": "test",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 50,
+  "seed": 1840816774,
+  "weekday": 2,
+  "split": "test",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "pharmacy",
+    "start": "09:35",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 51,
+  "seed": 276177978,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 52,
+  "seed": 1940242191,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "10:25",
+    "duration": 85,
+    "strength": 1.67
+   }
+  ]
+ },
+ {
+  "day": 53,
+  "seed": 2098032397,
+  "weekday": 5,
+  "split": "test",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "09:35",
+    "duration": 75,
+    "strength": 1.72
+   }
+  ]
+ },
+ {
+  "day": 54,
+  "seed": 897892051,
+  "weekday": 0,
+  "split": "test",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "registration",
+    "start": "10:55",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 55,
+  "seed": 939160957,
+  "weekday": 1,
+  "split": "test",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 56,
+  "seed": 1472388431,
+  "weekday": 2,
+  "split": "test",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 57,
+  "seed": 1862755898,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 58,
+  "seed": 566138909,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "consultation",
+    "start": "10:15",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 59,
+  "seed": 793819072,
+  "weekday": 5,
+  "split": "test",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "registration",
+    "start": "11:10",
+    "duration": 70,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 60,
+  "seed": 372366741,
+  "weekday": 0,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "09:55",
+    "duration": 80,
+    "strength": 1.72
+   }
+  ]
+ },
+ {
+  "day": 61,
+  "seed": 668729885,
+  "weekday": 1,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 62,
+  "seed": 496582944,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 63,
+  "seed": 2038017322,
+  "weekday": 3,
+  "split": "tune",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 64,
+  "seed": 1527124783,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "09:50",
+    "duration": 60,
+    "strength": 1.76
+   }
+  ]
+ },
+ {
+  "day": 65,
+  "seed": 1049922580,
+  "weekday": 5,
+  "split": "tune",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 66,
+  "seed": 32578942,
+  "weekday": 0,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 67,
+  "seed": 1523574809,
+  "weekday": 1,
+  "split": "test",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 68,
+  "seed": 56367311,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "registration",
+    "start": "11:20",
+    "duration": 75,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 69,
+  "seed": 1661963609,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "registration",
+    "start": "09:40",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 70,
+  "seed": 978824553,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 71,
+  "seed": 1185498381,
+  "weekday": 5,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "pharmacy",
+    "start": "11:20",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 72,
+  "seed": 760082730,
+  "weekday": 0,
+  "split": "test",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 73,
+  "seed": 1001753457,
+  "weekday": 1,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 74,
+  "seed": 903885668,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "pharmacy",
+    "start": "09:45",
+    "duration": 65,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 75,
+  "seed": 202482777,
+  "weekday": 3,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "registration",
+    "start": "10:25",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 76,
+  "seed": 961906332,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 77,
+  "seed": 840416347,
+  "weekday": 5,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "consultation",
+    "start": "11:25",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 78,
+  "seed": 221409205,
+  "weekday": 0,
+  "split": "train",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "11:10",
+    "duration": 60,
+    "strength": 1.92
+   }
+  ]
+ },
+ {
+  "day": 79,
+  "seed": 1113153295,
+  "weekday": 1,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "pharmacy",
+    "start": "11:05",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 80,
+  "seed": 286574489,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "staffing_gap",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "consultation",
+    "start": "09:30",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 81,
+  "seed": 897420803,
+  "weekday": 3,
+  "split": "tune",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 82,
+  "seed": 1623069620,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 83,
+  "seed": 1015358499,
+  "weekday": 5,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 84,
+  "seed": 1709348147,
+  "weekday": 0,
+  "split": "tune",
+  "scenario": "demand_surge",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "10:35",
+    "duration": 60,
+    "strength": 1.61
+   }
+  ]
+ },
+ {
+  "day": 85,
+  "seed": 154051843,
+  "weekday": 1,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 86,
+  "seed": 1546378742,
+  "weekday": 2,
+  "split": "train",
+  "scenario": "normal",
+  "events": []
+ },
+ {
+  "day": 87,
+  "seed": 163306573,
+  "weekday": 3,
+  "split": "test",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "consultation",
+    "start": "09:40",
+    "duration": 75,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 88,
+  "seed": 1153449858,
+  "weekday": 4,
+  "split": "train",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "imaging",
+    "start": "10:05",
+    "duration": 90,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 89,
+  "seed": 154199994,
+  "weekday": 5,
+  "split": "train",
+  "scenario": "slow_processing",
+  "events": [
+   {
+    "type": "slow_processing",
+    "station": "registration",
+    "start": "11:05",
+    "duration": 60,
+    "strength": 1.5
+   }
+  ]
+ }
+]
