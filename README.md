@@ -176,8 +176,8 @@ A pilot would need one thing from a hospital: a timestamped event-log export fro
 
 | Role | Name | Area |
 | --- | --- | --- |
-| Team leader | Yap Yu Hang | App and delivery |
-| Team member | Tan Wei Ren | Engine and evaluation |
+| Frontend | Yap Yu Hang | App and delivery |
+| Backend | Tan Wei Ren | Engine and evaluation |
 
 ## Acknowledgements
 
