@@ -115,7 +115,7 @@ docs/              PRD, TRD, design
 
 | Source | Used for |
 | --- | --- |
-| [HospitalOPD event log](https://data.mendeley.com/datasets/j2hd2239dr/1) (Mendeley Data, DOI 10.17632/j2hd2239dr.1) | Calibrating arrival pattern, service times and pathway shares |
+| [HospitalOPD event log](https://data.mendeley.com/datasets/j2hd2239dr/1) (Mendeley Data, DOI 10.17632/j2hd2239dr.1, CC BY 4.0) | Calibrating the arrival pattern by hour and weekday, and the laboratory and imaging shares |
 | Simulated clinic days | Training, tuning, testing, what-ifs and the policy comparison |
 
 A real log cannot answer "what if we had moved someone" and has no cause labels, so results come from simulated days: 60 to train, 10 to tune, 20 held out for testing.
@@ -129,7 +129,13 @@ python engine/calibrate.py data/raw/HospitalOPD-noname.csv
 
 Calibration writes only derived summary numbers to `data/calibration.json`. The engine uses that file automatically when `calibration.use` is `true` in `config.yaml`.
 
-_State here whether this build is calibrated on the real log or runs on the assumptions in `config.yaml`._
+**This build is calibrated on the real log.** The log holds 62,422 event records (49,912 visits). Calibration uses 19,214 visits on 156 days, Monday to Saturday, 08:00 to 16:00, from 2025-09-01 to 2026-03-01, with timestamps shifted from UTC to UTC+5.
+
+- **Measured from the log:** arrivals per hour, weekday pattern, and the share of patients sent to laboratory (13%) and imaging (12%).
+- **Assumed, not measured:** service times, the pharmacy share and staff numbers. The log has no usable service durations, records pharmacy for under 1% of visits, and identifies only doctors.
+- **Scaled:** real arrivals are multiplied by 0.75 so the assumed four-doctor clinic is 92% busy in the peak hour of an average weekday.
+
+The raw file is not in this repository because it names individual doctors. Only the summary numbers in `data/calibration.json` are committed.
 
 ## Evaluation
 
@@ -161,4 +167,4 @@ _Add names and roles._
 
 ## Acknowledgements
 
-HospitalOPD dataset, Mendeley Data. Check the dataset page for its licence and citation before reuse.
+Batool, Komal; Mehmood, Arshad; Zafar, Saad (2026), "HospitalOPD", Mendeley Data, V1, doi: 10.17632/j2hd2239dr.1. Licensed under CC BY 4.0.
