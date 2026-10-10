@@ -265,23 +265,37 @@ def trust_statements(r):
     cause = r.get("cause") or {}
     confusion = cause.get("confusion") or {}
     if confusion and all(isinstance(v, dict) for v in confusion.values()):
-        total = sum(sum(row.values()) for row in confusion.values())
+        # Days with no alert are a missed warning, not a wrong cause; count them apart.
+        alerted = sum(n for row in confusion.values() for k, n in row.items() if k != "no_alert")
+        missed = sum(row.get("no_alert", 0) for row in confusion.values())
         right = sum(row.get(true, 0) for true, row in confusion.items())
-        if total:
-            out.append(f"Named the right cause in {right} of {total} test cases.")
+        if alerted:
+            line = f"Named the right cause on {right} of {alerted} test days where it raised an alert."
+            if missed:
+                line += f" On {missed} more it raised no alert."
+            out.append(line)
     elif cause.get("accuracy") is not None:
         out.append(f"Named the right cause in {cards.pct(cause['accuracy'])}% of test cases.")
     pol = r.get("policy") or {}
-    tool = (pol.get("tool") or {}).get("share_over_30")
-    reactive = (pol.get("reactive") or {}).get("share_over_30")
+    tool_p, react_p = pol.get("tool") or {}, pol.get("reactive") or {}
+    against = "against a supervisor who reacts only after the limit is passed"
+    tool_h, react_h = tool_p.get("total_wait_hours"), react_p.get("total_wait_hours")
+    if tool_h is not None and react_h:
+        cut = cards.whole((react_h - tool_h) / react_h * 100)
+        if cut > 0:
+            out.append(f"Following the top action cut total patient waiting by {cut}%, {against} "
+                       f"({cards.whole(react_h)} to {cards.whole(tool_h)} hours over the test days).")
+    tool, reactive = tool_p.get("share_over_30"), react_p.get("share_over_30")
     if tool is not None and reactive is not None:
         t, rv = cards.pct(tool), cards.pct(reactive)
         if t < rv:
             out.append(f"Following the top action cut patients waiting over 30 minutes from "
-                       f"{rv}% to {t}%, against a supervisor who reacts only after the limit is passed.")
+                       f"{rv}% to {t}%, {against}.")
+        elif t == rv:
+            out.append(f"The share of patients waiting over 30 minutes was about the same: {t}% "
+                       f"with the tool and {rv}% reacting.")
         else:
-            out.append(f"Following the top action left {t}% of patients waiting over 30 minutes, "
-                       f"against {rv}% for a supervisor who reacts only after the limit is passed.")
+            out.append(f"Patients waiting over 30 minutes: {t}% with the tool, {rv}% reacting.")
     return out
 
 
