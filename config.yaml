@@ -1,10 +1,14 @@
+<<<<<<< HEAD
 # Every tunable value lives here; nobody hard-codes one.
 # Owner: Person A (engine). Tell Person B before changing anything the app reads.
 
+=======
+>>>>>>> c584d7444b6ef316e06f2a4f18c168138bd00e19
 open: "08:00"
 close: "16:00"
 tick_min: 5
 wait_limit_min: 30
+<<<<<<< HEAD
 
 # Assumed arrivals. Used only when calibration is off or data/calibration.json is missing.
 arrivals_per_hour: {default: 12, peak: 22, peak_from: "09:00", peak_to: "11:00"}
@@ -55,6 +59,17 @@ recommend: {min_gain_min: 2.0, min_total_saved_patient_min: 1.0, donor_max_wait_
 
 action_duration_min: 60
 
+=======
+arrivals_per_hour: {default: 12, peak: 22, peak_from: "09:00", peak_to: "11:00"}
+stations:
+  registration: {staff: 2, service_min: 4,  share: 1.00, weight: 1.0}
+  consultation: {staff: 4, service_min: 10, share: 1.00, weight: 1.5}
+  laboratory:   {staff: 1, service_min: 6,  share: 0.35, weight: 1.0}
+  imaging:      {staff: 1, service_min: 12, share: 0.15, weight: 1.0}
+  pharmacy:     {staff: 2, service_min: 7,  share: 0.65, weight: 1.2}
+alert: {raise_at: 0.60, clear_at: 0.40, ticks: 2}
+forecast: {runs: 30, horizons_min: [15, 30, 60]}
+>>>>>>> c584d7444b6ef316e06f2a4f18c168138bd00e19
 allowed_moves:   # assumption: a moved staff member works at full speed
   - {id: clerk_to_pharmacy, from: registration, to: pharmacy,
      label: "Move one registration clerk to the pharmacy counter"}
@@ -64,6 +79,7 @@ allowed_moves:   # assumption: a moved staff member works at full speed
      label: "Open the reserve room with the on-call doctor"}
   - {id: fast_track_pharmacy, station: pharmacy, service_scale: 0.8,
      label: "Fast-track repeat prescriptions at pharmacy"}
+<<<<<<< HEAD
 
 # Injected disruptions with a known cause. Starts fall in the busy part of the day.
 scenarios:
@@ -83,3 +99,5 @@ days:
     tune:  {normal: 4,  demand_surge: 2,  staffing_gap: 2,  slow_processing: 2}
     test:  {normal: 10, demand_surge: 3,  staffing_gap: 3,  slow_processing: 4}
   two_cause: 12                         # robustness days, never used for training or tuning
+=======
+>>>>>>> c584d7444b6ef316e06f2a4f18c168138bd00e19
