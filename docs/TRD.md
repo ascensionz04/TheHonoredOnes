@@ -8,7 +8,7 @@
 
 ## 1. Architecture
 
-One Streamlit app imports one Python engine. There is no separate API server, database or background worker.
+One Reflex app imports one Python engine. Reflex runs the app's Python state on its own backend and serves a compiled React front end; there is no separate API server or database.
 
 ```mermaid
 flowchart LR
@@ -31,7 +31,7 @@ flowchart LR
     CJ --> SIM
     M --> FC
     CFG[config.yaml] --> SIM
-    API --> APP[Streamlit app: one screen]
+    API --> APP[Reflex app: one screen]
     RJ --> APP
 ```
 
@@ -48,17 +48,17 @@ The central design choice: **one forward simulator is used three ways.**
 | Layer | Choice | Reason |
 | --- | --- | --- |
 | Language | Python 3.11 or later | One language for engine and app |
-| App | Streamlit | One file to a public link; no front-end build |
+| App | Reflex | Pure-Python state and components compiled to a React front end; full control over the look |
 | Simulator | Plain Python minute-step loop with NumPy | Fast, repeatable from a seed, can start from any mid-day state |
 | Learned model | scikit-learn `HistGradientBoostingRegressor(loss="poisson")` | No extra install; suited to count targets |
 | Data handling | pandas | Calibration and evaluation |
-| Charts | Altair | Small bars inside expanders only |
+| Charts | Plain HTML and CSS bars | Small bars inside the Why? disclosure only |
 | Config | YAML via PyYAML | Every tunable value in one file |
-| Hosting | Streamlit Community Cloud | Free, deploys from the GitHub repo on push |
+| Hosting | Reflex Cloud (`reflex deploy`) or any server running `reflex run --env prod` | |
 
 SimPy is not used: starting a discrete-event simulation from a mid-day state is awkward, and the engine needs that constantly.
 
-`requirements.txt`: `streamlit`, `pandas`, `numpy`, `scikit-learn`, `pyyaml`, `altair`. Pin to the versions installed locally.
+`requirements.txt`: `reflex`, `pandas`, `numpy`, `scikit-learn`, `pyyaml`. Pin to the versions installed locally.
 
 ## 3. Repository layout
 
@@ -78,9 +78,15 @@ engine/
   forecast.py    arrival model, forecast(), alert rule
   diagnose.py    diagnose(), priority score
   recommend.py   recommend(), alerts()
-app/
-  streamlit_app.py
-  cards.py       sentence templates and card rendering
+rxconfig.py
+predictor/
+  predictor.py   page layout and app entry point
+  state.py       replay state and background replay loop
+  view.py        cached engine calls -> display models
+  wording.py     sentence templates
+  components.py  UI building blocks
+assets/
+  styles.css     design tokens, light and dark themes
 data/
   days.json          90 day specs
   calibration.json   derived from the real log
@@ -92,8 +98,6 @@ eval/
   results.json
 tests/
   test_contract.py
-.streamlit/
-  config.toml    theme
 ```
 
 **Import rule:** the app imports only from `engine/api.py`. Initially `api.py` re-exports the fakes in `mock.py`; each is swapped for the real function as it lands, so app imports never change.
@@ -452,7 +456,7 @@ Zeros are placeholders for the shape only. No value is reported until it is meas
 ## 12. Deployment
 
 1. Push to `main` on GitHub.
-2. Streamlit Community Cloud builds `app/streamlit_app.py` from the repo and redeploys on each push.
+2. Deploy with `reflex deploy` (Reflex Cloud), or run `reflex run --env prod` on a server.
 3. Tag the commit at each working checkpoint; redeploy the last tag if a push breaks the app.
 
 Constraints: memory on the free tier is capped and limits can change without notice; idle apps hibernate. Keep committed data small and open the link before presenting.
@@ -481,5 +485,5 @@ Each alert costs about eight forecast-sized runs per tick: one forecast, three f
 | Area | Owner |
 | --- | --- |
 | `engine/`, `eval/`, `data/`, `models/`, `config.yaml` | Person A (engine) |
-| `app/`, `README.md`, `requirements.txt`, deployment, slides | Person B (app and delivery) |
+| `predictor/`, `assets/`, `README.md`, `requirements.txt`, deployment, slides | Person B (app and delivery) |
 | API contract | Both; changed only by agreement |

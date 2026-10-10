@@ -47,28 +47,28 @@ Requires Python 3.11 or later.
 git clone <repo-url>
 cd <repo-folder>
 pip install -r requirements.txt
-streamlit run app/streamlit_app.py
+reflex run
 ```
+
+Then open http://localhost:3000. The first run installs the web front end (Node packages) and takes a minute or two; later runs start in seconds.
 
 Run commands from the repository root.
 
 | Task | Command |
 | --- | --- |
-| Run the app | `streamlit run app/streamlit_app.py` |
+| Run the app | `reflex run` (production build: `reflex run --env prod`) |
 | Regenerate all results | `python eval/run_eval.py` |
 | Check the engine contract | `python -m pytest tests/` |
 | Rebuild calibration from the real log | `python engine/calibrate.py` |
 
 ### Deploy
 
-The live demo runs on Streamlit Community Cloud and redeploys on every push to `main`.
+The app is a Reflex app: a Python backend (state and engine calls) and a compiled React front end.
 
-1. At [share.streamlit.io](https://share.streamlit.io), choose **Create app** and pick this repository.
-2. Branch `main`, main file path `app/streamlit_app.py`.
-3. Under **Advanced settings**, choose Python 3.12.
-4. Deploy, then open the public link in a private window to confirm it loads with no login.
+- **Reflex Cloud:** `reflex login`, then `reflex deploy` from the repository root.
+- **Any server:** `reflex run --env prod` serves the front end on port 3000 and the backend on port 8000. To ship the front end as static files, use `reflex export`.
 
-Tag each working checkpoint (`git tag checkpoint-1 && git push --tags`). If a push breaks the live link, redeploy the last tag. Idle apps go to sleep, so open the link 10 minutes before presenting.
+Open the public link in a private window to confirm it loads with no login. Tag each working checkpoint (`git tag checkpoint-1 && git push --tags`), and redeploy the last tag if a push breaks the live link.
 
 ## Using the demo
 
@@ -99,15 +99,19 @@ config.yaml        every tunable value: stations, staff, limits, allowed moves
 engine/            simulator, forecast, cause, recommendation
   api.py           the six functions the app uses
   mock.py          stand-in outputs in the same shapes, used until each real function lands
-app/               the single Streamlit screen
-  streamlit_app.py replay bar, pathway strip, action card, also watching, why trust this
-  cards.py         sentence templates and card rendering
+rxconfig.py        Reflex configuration
+predictor/         the single Reflex screen
+  predictor.py     page layout and app entry point
+  state.py         replay clock, applied moves, background replay loop
+  view.py          the only caller of engine/api.py: cached calls turned into display models
+  wording.py       sentence templates and number formatting
+  components.py    navigation, controls, patient flow, action card, side cards, evidence
+assets/            stylesheet (light and dark themes) and icon
 data/              day specs, calibration, demo days
 models/            trained arrival forecaster
 eval/              evaluation script and results.json
 tests/             contract test
 docs/              PRD, TRD, design
-.streamlit/        theme
 ```
 
 ## Data

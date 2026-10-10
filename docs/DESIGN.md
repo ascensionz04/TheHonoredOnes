@@ -4,7 +4,7 @@
 **Status:** Draft v1, 10 October 2026
 **Related docs:** [PRD.md](PRD.md) (requirements), [TRD.md](TRD.md) (engine and data)
 
-This document specifies the single screen: its layout, its states, its exact wording and how to build it in Streamlit.
+This document specifies the single screen: its layout, its states, its exact wording and how it is built in Reflex.
 
 ---
 
@@ -214,63 +214,47 @@ Filled only with numbers from the engine. One template per case.
 
 ## 6. Visual style
 
-The look follows Apple's interface conventions, adapted for the web: white cards on a light grey page, one translucent toolbar, system type with size-specific tracking, and instant feedback when a control is pressed. All values live in `app/style.py`.
+The look is a modern SaaS console: white cards on a softly lit grey page, a translucent sticky navigation bar, one typeface, and colour reserved for status and for the one thing to do. A dark theme is one click away in the navigation bar. All values live as CSS variables in `assets/styles.css`; dark values are redefined under `html.dark`.
 
 ### 6.1 Colour
 
-| Role | Hex | Used for |
+| Role | Light | Used for |
 | --- | --- | --- |
-| Page | `#F3F6F7` | Background behind the cards |
-| Card | `#FFFFFF` | Station tiles, action card, lists, expanders |
-| Fill | `#EEF3F4` | Inset boxes inside the card (expected effect) |
-| Hairline | `rgba(15,42,51,0.10)` | Card outlines and row separators |
-| Text | `#0F2A33` | Headings, action sentence, numbers |
-| Secondary text | `#3D5359` | Card sentences, station names |
-| Tertiary text | `#5B6F74` | Labels, captions, assumptions |
-| Action | `#0F2A33` | Apply button, action card ring, focused station tile |
-| OK | `#1E7B3E` | `ok` status, improved outcome figure |
-| Watch | `#A34F00` | `watch` status, "no move helps" box |
-| Breach | `#C4161C` | `will breach` status, deadline badge |
-| Over limit | `#8E0F14` | `over limit` status (solid badge, white text) |
+| Page | `#F5F7FA` with a faint teal glow at the top | Background behind the cards |
+| Card | `#FFFFFF` | Panels, station tiles, action card |
+| Fill | `#F4F6F9` | Insets, chips, disclosure rows |
+| Hairline | `rgba(15,23,42,0.08)` | Card outlines and separators |
+| Text | `#0B1220` | Headings, action sentence, numbers |
+| Secondary text | `#3F4B5E` | Card sentences |
+| Tertiary text | `#6B7689` | Labels, captions |
+| Brand | `#14B8A6` to `#0F766E` gradient | Logo, Apply button, selected day, timeline, top cause bar |
+| OK | `#15803D` | `ok` status, improved outcome figure |
+| Watch | `#B45309` | `watch` status, "no move helps" card |
+| Breach | `#DC2626` | `will breach` status, "Do this now" band and deadline |
+| Over limit | `#991B1B` | `over limit` status (solid pill, white text) |
 
-Colour carries status only, plus the dark teal action colour for the one thing to do. A red word always means something. Status badges are tinted pills with a dot and the word; `over limit` is a solid pill so it differs from `will breach` by shape as well as shade. If you change these values, check that text remains legible against its background.
+Status pills carry a dot and a word; `over limit` is a solid pill so it differs from `will breach` by shape as well as shade.
 
 ### 6.2 Type and spacing
 
-One family throughout: the system font (`-apple-system`, SF Pro on Apple devices, Segoe UI on Windows). Hierarchy comes from weight, size and leading together.
+One family: Inter, falling back to the system font. Numbers use tabular figures.
 
 | Element | Treatment |
 | --- | --- |
-| Page title | 2.25 rem, bold, tracking −0.025 em, leading 1.08 |
-| Action sentence | Largest text in the card: up to 2 rem, bold, tracking −0.022 em |
-| Card sentences | 1.04 rem, leading 1.55, secondary colour; "Cause: …" lead-in in bold |
-| Wait values | 1.85 rem, semibold, tabular figures, tracking −0.03 em |
-| Clock | 1.7 rem, semibold, tabular figures |
-| Labels ("DO THIS NOW", "PATIENT FLOW") | 0.72 rem, uppercase, semibold, tracking +0.06 em |
-| Status words | Small tinted pill, semibold |
+| Action sentence | Largest text on the page: up to 32 px, bold, tight tracking |
+| Station wait | 34 px bold (24 px on the laboratory and imaging branch tiles) |
+| Clock | 24 px bold, in the navigation bar |
+| Card sentences | 16 px, leading 1.6, secondary colour; "Cause: …" lead-in in bold |
+| Labels ("DO THIS NOW", "DEMO DAY") | 11–12 px, uppercase, semibold, wide tracking |
 
-Cards use 16–22 px corner radius and a soft two-layer shadow; the action card has the largest radius and the deepest shadow. Generous space above and below the action card; tight spacing inside the pathway strip.
+Panels use a 16 px radius and a soft two-layer shadow; the action card has a 22 px radius, the deepest shadow and a coloured top edge.
 
 ### 6.3 Materials and motion
 
-- **Toolbar:** the replay bar is a translucent, blurred layer (`backdrop-filter`) that stays at the top while the page scrolls under it.
-- **Press feedback:** buttons scale to 97% on press, within 100 ms. Feedback comes on press, not release.
-- **No motion on replay ticks.** The screen re-renders every 5 simulated minutes, so nothing animates on change, and Streamlit's dimming of stale elements is turned off to avoid flicker.
-- **Preferences:** reduced motion removes press scaling; reduced transparency makes the toolbar solid; increased contrast darkens hairlines and secondary text.
-
-### 6.4 Theme file
-
-`.streamlit/config.toml`:
-
-```toml
-[theme]
-base = "light"
-primaryColor = "#0F2A33"
-backgroundColor = "#F3F6F7"
-secondaryBackgroundColor = "#EEF3F4"
-textColor = "#0F2A33"
-font = "sans serif"
-```
+- **Navigation:** translucent and blurred, sticky at the top; it holds the clinic clock and the replay status (Replaying, Paused, Clinic closed).
+- **Press feedback:** buttons scale to 97% on press.
+- **Replay ticks:** wait meters and the timeline ease to their new value; nothing else moves. The "Do this now" dot and the "Replaying" dot pulse.
+- **Preferences:** reduced motion removes all animation; reduced transparency makes the navigation solid; increased contrast darkens hairlines and secondary text.
 
 ## 7. Demo days
 
@@ -307,28 +291,27 @@ Every step uses a control that is visible without scrolling on a laptop screen, 
 - Nothing depends on hover.
 - Text can be read from the back of a room when projected: the action sentence must be legible at presentation distance.
 
-## 10. Streamlit implementation
+## 10. Reflex implementation
 
-| Zone | Streamlit elements |
+| Zone | Implementation |
 | --- | --- |
-| Page | `st.set_page_config(page_title=..., layout="centered", initial_sidebar_state="collapsed")` |
-| Replay bar | `st.columns` holding `st.selectbox` (day), `st.button` (Play/Pause), `st.select_slider` (speed), `st.markdown` (clock), `st.button` (Reset) |
-| Pathway strip | One `st.markdown` HTML block: a five-column grid of station tiles with chevrons |
-| Status words | Coloured markdown: `:green[ok]`, `:orange[watch]`, `:red[will breach]`, bold `:red[over limit]` |
-| Action card | `st.container(border=True)`; `st.caption` for the header, `st.subheader` for the action, `st.write` for sentences, `st.button(..., type="primary")` for Apply |
-| Why? / What if? | `st.expander`; bars with a small Altair horizontal bar chart |
-| Outcome line | `st.success` |
-| Calm and watch states | `st.success` and `st.info` |
-| No move helps | `st.warning` |
-| Also watching | One `st.button` per line that sets the selected station in `st.session_state` |
-| Why trust this? | `st.expander` with `st.markdown` statements and `st.caption` for assumptions |
-| Errors | `st.error` with the plain message from section 4 |
+| Page | `predictor/predictor.py`: `rx.App(theme=None)` with `assets/styles.css`; one route, `on_load` builds the first render |
+| Navigation | Brand, clinic clock, replay status pill, light/dark toggle (`rx.toggle_color_mode`) |
+| Replay bar | Four day chips, Play/Pause, step 5 min, speed segmented control, Reset, and a day timeline with a marker per applied move |
+| Pathway strip | Five tiles: wait now, 30-minute trend, wait meter against the limit, staff on duty, chance of passing the limit within the hour |
+| Action card | Band with deadline, station and chance chips, action, sentences, Apply, expected effect; Why? and What if? are closed `<details>` disclosures |
+| Calm, watch, closed, error | One note card with an icon per state |
+| Also watching | Side card, one button per alert; selecting one shows it in the action card |
+| Moves applied | Side card listing applied moves, with the with/without outcome for the day |
+| Why trust this? | Four metric cards from `eval/results.json`, with data and assumptions in a disclosure |
 
-Session state keys: `day`, `clock`, `playing`, `speed`, `actions`, `selected_station`.
+State (`predictor/state.py`): `day`, `clock`, `playing`, `speed`, `selected_station`, `applied`, and `screen`, a `view.Screen` rebuilt by `view.build()` after every change. Applied moves are kept server-side in `_actions`.
 
-Replay loop: when `playing` is true, sleep for the speed's interval, add 5 minutes to `clock`, and call `st.rerun()`. Stop at closing time.
+Replay loop: Play starts a background event that sleeps for the speed's interval, adds 5 minutes to `clock`, rebuilds the screen and repeats until paused, reset or closing time. A loop counter stops stale loops when the day changes.
 
-If five tiles are cramped in the centred layout, switch to `layout="wide"` and keep the action card in a centred middle column.
+`predictor/view.py` is the only module that calls `engine/api.py`. Calls are cached with `lru_cache`, since every engine function is deterministic for its inputs.
+
+Below 1100 px the side cards move under the action card; below 860 px the pathway strip becomes a vertical list.
 
 ## 11. What this screen must not become
 
