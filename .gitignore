@@ -1,8 +1,17 @@
 __pycache__/
 *.pyc
+<<<<<<< HEAD
+.pytest_cache/
+.venv/
+venv/
+
+# The raw HospitalOPD log is never committed (it names individual doctors).
+# engine/calibrate.py downloads it here and writes only summary numbers.
+=======
 .venv/
 venv/
 .pytest_cache/
 .DS_Store
 # raw real-data downloads stay local; commit only derived summaries (TRD 6)
+>>>>>>> c584d7444b6ef316e06f2a4f18c168138bd00e19
 data/raw/

@@ -1,0 +1,278 @@
+[
+ {
+  "day": 1000,
+  "seed": 688479774,
+  "weekday": 0,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "10:50",
+    "duration": 70,
+    "strength": 1.61
+   },
+   {
+    "type": "staffing_gap",
+    "station": "consultation",
+    "start": "11:10",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 1001,
+  "seed": 1157827762,
+  "weekday": 1,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "10:15",
+    "duration": 85,
+    "strength": 1.78
+   },
+   {
+    "type": "slow_processing",
+    "station": "consultation",
+    "start": "10:25",
+    "duration": 60,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 1002,
+  "seed": 1392491288,
+  "weekday": 2,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "consultation",
+    "start": "11:10",
+    "duration": 120,
+    "strength": 1.0
+   },
+   {
+    "type": "slow_processing",
+    "station": "consultation",
+    "start": "11:30",
+    "duration": 80,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 1003,
+  "seed": 685754351,
+  "weekday": 3,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "09:35",
+    "duration": 85,
+    "strength": 1.95
+   },
+   {
+    "type": "staffing_gap",
+    "station": "pharmacy",
+    "start": "09:55",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 1004,
+  "seed": 1409365907,
+  "weekday": 4,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "11:05",
+    "duration": 70,
+    "strength": 1.89
+   },
+   {
+    "type": "slow_processing",
+    "station": "pharmacy",
+    "start": "11:20",
+    "duration": 65,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 1005,
+  "seed": 441221053,
+  "weekday": 5,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "pharmacy",
+    "start": "09:30",
+    "duration": 120,
+    "strength": 1.0
+   },
+   {
+    "type": "slow_processing",
+    "station": "pharmacy",
+    "start": "09:35",
+    "duration": 80,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 1006,
+  "seed": 1986270214,
+  "weekday": 0,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "09:45",
+    "duration": 80,
+    "strength": 1.66
+   },
+   {
+    "type": "staffing_gap",
+    "station": "registration",
+    "start": "09:55",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 1007,
+  "seed": 714315176,
+  "weekday": 1,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "11:20",
+    "duration": 60,
+    "strength": 1.79
+   },
+   {
+    "type": "slow_processing",
+    "station": "imaging",
+    "start": "11:40",
+    "duration": 75,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 1008,
+  "seed": 1252311185,
+  "weekday": 2,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "registration",
+    "start": "10:55",
+    "duration": 120,
+    "strength": 1.0
+   },
+   {
+    "type": "slow_processing",
+    "station": "imaging",
+    "start": "11:25",
+    "duration": 70,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 1009,
+  "seed": 1537368291,
+  "weekday": 3,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "09:50",
+    "duration": 65,
+    "strength": 1.84
+   },
+   {
+    "type": "staffing_gap",
+    "station": "consultation",
+    "start": "10:20",
+    "duration": 120,
+    "strength": 1.0
+   }
+  ]
+ },
+ {
+  "day": 1010,
+  "seed": 1672327059,
+  "weekday": 4,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "demand_surge",
+    "station": "registration",
+    "start": "10:40",
+    "duration": 75,
+    "strength": 1.83
+   },
+   {
+    "type": "slow_processing",
+    "station": "registration",
+    "start": "11:10",
+    "duration": 60,
+    "strength": 1.5
+   }
+  ]
+ },
+ {
+  "day": 1011,
+  "seed": 1024161419,
+  "weekday": 5,
+  "split": "two_cause",
+  "scenario": "two_cause",
+  "events": [
+   {
+    "type": "staffing_gap",
+    "station": "consultation",
+    "start": "10:35",
+    "duration": 120,
+    "strength": 1.0
+   },
+   {
+    "type": "slow_processing",
+    "station": "registration",
+    "start": "10:45",
+    "duration": 85,
+    "strength": 1.5
+   }
+  ]
+ }
+]
