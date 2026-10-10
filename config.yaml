@@ -1,0 +1,22 @@
+open: "08:00"
+close: "16:00"
+tick_min: 5
+wait_limit_min: 30
+arrivals_per_hour: {default: 12, peak: 22, peak_from: "09:00", peak_to: "11:00"}
+stations:
+  registration: {staff: 2, service_min: 4,  share: 1.00, weight: 1.0}
+  consultation: {staff: 4, service_min: 10, share: 1.00, weight: 1.5}
+  laboratory:   {staff: 1, service_min: 6,  share: 0.35, weight: 1.0}
+  imaging:      {staff: 1, service_min: 12, share: 0.15, weight: 1.0}
+  pharmacy:     {staff: 2, service_min: 7,  share: 0.65, weight: 1.2}
+alert: {raise_at: 0.60, clear_at: 0.40, ticks: 2}
+forecast: {runs: 30, horizons_min: [15, 30, 60]}
+allowed_moves:   # assumption: a moved staff member works at full speed
+  - {id: clerk_to_pharmacy, from: registration, to: pharmacy,
+     label: "Move one registration clerk to the pharmacy counter"}
+  - {id: nurse_to_lab, from: float, to: laboratory,
+     label: "Send the float nurse to laboratory sample-taking"}
+  - {id: open_reserve_room, from: float, to: consultation,
+     label: "Open the reserve room with the on-call doctor"}
+  - {id: fast_track_pharmacy, station: pharmacy, service_scale: 0.8,
+     label: "Fast-track repeat prescriptions at pharmacy"}

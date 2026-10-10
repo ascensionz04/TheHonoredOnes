@@ -59,6 +59,17 @@ Run commands from the repository root.
 | Check the engine contract | `python -m pytest tests/` |
 | Rebuild calibration from the real log | `python engine/calibrate.py` |
 
+### Deploy
+
+The live demo runs on Streamlit Community Cloud and redeploys on every push to `main`.
+
+1. At [share.streamlit.io](https://share.streamlit.io), choose **Create app** and pick this repository.
+2. Branch `main`, main file path `app/streamlit_app.py`.
+3. Under **Advanced settings**, choose Python 3.12.
+4. Deploy, then open the public link in a private window to confirm it loads with no login.
+
+Tag each working checkpoint (`git tag checkpoint-1 && git push --tags`). If a push breaks the live link, redeploy the last tag. Idle apps go to sleep, so open the link 10 minutes before presenting.
+
 ## Using the demo
 
 1. Pick a day: **Ordinary busy day**, **Doctor called away**, **Holiday rush** or **Pharmacy system slow**.
@@ -87,12 +98,16 @@ Full detail is in the [TRD](docs/TRD.md).
 config.yaml        every tunable value: stations, staff, limits, allowed moves
 engine/            simulator, forecast, cause, recommendation
   api.py           the six functions the app uses
+  mock.py          stand-in outputs in the same shapes, used until each real function lands
 app/               the single Streamlit screen
+  streamlit_app.py replay bar, pathway strip, action card, also watching, why trust this
+  cards.py         sentence templates and card rendering
 data/              day specs, calibration, demo days
 models/            trained arrival forecaster
 eval/              evaluation script and results.json
 tests/             contract test
 docs/              PRD, TRD, design
+.streamlit/        theme
 ```
 
 ## Data
