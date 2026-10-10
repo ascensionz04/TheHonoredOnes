@@ -8,7 +8,7 @@
 
 ## 1. Architecture
 
-One Streamlit app imports one Python engine. There is no separate API server, database or background worker.
+A Next.js front end talks to one Python engine through a small stateless API (`api/index.py`). The browser holds the replay clock and the applied moves and asks for the screen at each step; the engine is deterministic, so there is no database and no server-side session.
 
 ```mermaid
 flowchart LR
@@ -31,7 +31,7 @@ flowchart LR
     CJ --> SIM
     M --> FC
     CFG[config.yaml] --> SIM
-    API --> APP[Streamlit app: one screen]
+    API --> APP[Next.js app: one screen, via /api/py]
     RJ --> APP
 ```
 
@@ -48,17 +48,18 @@ The central design choice: **one forward simulator is used three ways.**
 | Layer | Choice | Reason |
 | --- | --- | --- |
 | Language | Python 3.11 or later | One language for engine and app |
-| App | Streamlit | One file to a public link; no front-end build |
+| Front end | Next.js (App Router), Tailwind CSS, shadcn/ui, Framer Motion | Standard production web stack; full control over the look |
+| API | FastAPI | Thin, typed wrapper around `engine/api.py`; runs as a Vercel Python function |
 | Simulator | Plain Python minute-step loop with NumPy | Fast, repeatable from a seed, can start from any mid-day state |
 | Learned model | scikit-learn `HistGradientBoostingRegressor(loss="poisson")` | No extra install; suited to count targets |
 | Data handling | pandas | Calibration and evaluation |
-| Charts | Altair | Small bars inside expanders only |
+| Charts | Plain HTML and CSS bars | Small bars inside the Why? disclosure only |
 | Config | YAML via PyYAML | Every tunable value in one file |
-| Hosting | Streamlit Community Cloud | Free, deploys from the GitHub repo on push |
+| Hosting | Vercel | Front end and Python function in one deployment |
 
 SimPy is not used: starting a discrete-event simulation from a mid-day state is awkward, and the engine needs that constantly.
 
-`requirements.txt`: `streamlit`, `pandas`, `numpy`, `scikit-learn`, `pyyaml`, `altair`. Pin to the versions installed locally.
+`requirements.txt` (deployed): `fastapi`, `numpy`, `scikit-learn`, `pyyaml`. `requirements-dev.txt` adds `uvicorn`, `pandas`, `pytest`, `httpx`. Pin to the versions installed locally.
 
 ## 3. Repository layout
 
@@ -78,9 +79,13 @@ engine/
   forecast.py    arrival model, forecast(), alert rule
   diagnose.py    diagnose(), priority score
   recommend.py   recommend(), alerts()
-app/
-  streamlit_app.py
-  cards.py       sentence templates and card rendering
+api/
+  index.py       FastAPI: /api/py/health, /api/py/meta, /api/py/screen
+presenter/
+  view.py        cached engine calls -> display models
+  wording.py     sentence templates
+src/             Next.js front end (app/, components/, hooks/, lib/)
+vercel.json      Python function settings
 data/
   days.json          90 day specs
   calibration.json   derived from the real log
@@ -92,8 +97,6 @@ eval/
   results.json
 tests/
   test_contract.py
-.streamlit/
-  config.toml    theme
 ```
 
 **Import rule:** the app imports only from `engine/api.py`. Initially `api.py` re-exports the fakes in `mock.py`; each is swapped for the real function as it lands, so app imports never change.
@@ -452,7 +455,7 @@ Zeros are placeholders for the shape only. No value is reported until it is meas
 ## 12. Deployment
 
 1. Push to `main` on GitHub.
-2. Streamlit Community Cloud builds `app/streamlit_app.py` from the repo and redeploys on each push.
+2. Vercel builds the Next.js front end and the `api/index.py` Python function from the repo (`npx vercel --prod`, or automatically on push once the repo is connected).
 3. Tag the commit at each working checkpoint; redeploy the last tag if a push breaks the app.
 
 Constraints: memory on the free tier is capped and limits can change without notice; idle apps hibernate. Keep committed data small and open the link before presenting.
@@ -481,5 +484,5 @@ Each alert costs about eight forecast-sized runs per tick: one forecast, three f
 | Area | Owner |
 | --- | --- |
 | `engine/`, `eval/`, `data/`, `models/`, `config.yaml` | Person A (engine) |
-| `app/`, `README.md`, `requirements.txt`, deployment, slides | Person B (app and delivery) |
+| `src/`, `api/`, `presenter/`, `README.md`, `requirements.txt`, deployment, slides | Person B (app and delivery) |
 | API contract | Both; changed only by agreement |

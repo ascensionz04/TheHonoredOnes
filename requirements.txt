@@ -1,6 +1,5 @@
-streamlit==1.56.0
-pandas==3.0.2
+# Runtime: the engine and the API (installed by Vercel for api/index.py).
+fastapi==0.143.0
 numpy==2.4.4
 scikit-learn==1.8.0
 pyyaml==6.0.3
-altair==6.0.0

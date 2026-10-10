@@ -41,35 +41,37 @@ It is one screen with no login. It is deliberately not a dashboard: the screen l
 
 ## Quick start
 
-Requires Python 3.11 or later.
+Requires Python 3.11 or later and Node.js 20 or later.
 
 ```bash
 git clone <repo-url>
 cd <repo-folder>
-pip install -r requirements.txt
-streamlit run app/streamlit_app.py
+pip install -r requirements-dev.txt
+npm install
+npm run dev
 ```
+
+Then open http://localhost:3000. `npm run dev` starts the Next.js front end and the Python API (uvicorn on port 8000) together; the front end proxies `/api/py/*` to the API.
 
 Run commands from the repository root.
 
 | Task | Command |
 | --- | --- |
-| Run the app | `streamlit run app/streamlit_app.py` |
+| Run the app | `npm run dev` |
+| Build the front end | `npm run build` (also `npm run lint`, `npm run typecheck`) |
 | Regenerate all results | `python eval/run_eval.py` |
-| Check the engine contract | `python -m pytest tests/` |
+| Check the engine and the API | `python -m pytest tests/` |
 | Check a prepared CSV | `python engine/calibrate.py check data/raw/HospitalOPD-noname.csv` |
 | Rebuild calibration from the real log | `python engine/calibrate.py` |
 
 ### Deploy
 
-The live demo runs on Streamlit Community Cloud and redeploys on every push to `main`.
+The app deploys to [Vercel](https://vercel.com) as one project: the Next.js front end, plus `api/index.py` as a Python function that runs the engine. `requirements.txt` lists only what the function needs.
 
-1. At [share.streamlit.io](https://share.streamlit.io), choose **Create app** and pick this repository.
-2. Branch `main`, main file path `app/streamlit_app.py`.
-3. Under **Advanced settings**, choose Python 3.12.
-4. Deploy, then open the public link in a private window to confirm it loads with no login.
+- **From the command line:** `npx vercel login`, then `npx vercel --prod` from the repository root.
+- **From GitHub:** import the repository at vercel.com/new and keep the detected Next.js settings. Every push to the production branch redeploys.
 
-Tag each working checkpoint (`git tag checkpoint-1 && git push --tags`). If a push breaks the live link, redeploy the last tag. Idle apps go to sleep, so open the link 10 minutes before presenting.
+Open the public link in a private window to confirm it loads with no login. Tag each working checkpoint (`git tag checkpoint-1 && git push --tags`), and redeploy the last tag if a push breaks the live link.
 
 ## Using the demo
 
@@ -100,15 +102,22 @@ config.yaml        every tunable value: stations, staff, limits, allowed moves
 engine/            simulator, forecast, cause, recommendation
   api.py           the six functions the app uses
   mock.py          stand-in outputs in the same shapes, used until each real function lands
-app/               the single Streamlit screen
-  streamlit_app.py replay bar, pathway strip, action card, also watching, why trust this
-  cards.py         sentence templates and card rendering
+api/index.py       the web API (FastAPI): /api/py/meta and /api/py/screen; a Vercel Python function
+presenter/         turns engine results into what the screen shows
+  view.py          the only caller of engine/api.py: cached calls turned into display models
+  wording.py       sentence templates and number formatting
+src/               the Next.js front end (App Router, Tailwind CSS, shadcn/ui)
+  app/             layout, page, theme
+  components/dashboard/  header, replay controls, patient flow, action card, side cards, evidence
+  components/ui/   shadcn/ui components
+  hooks/use-replay.ts    replay clock, play loop, applied moves
+  lib/             API client, types
+vercel.json        Python function settings for deployment
 data/              day specs, calibration, demo days
 models/            trained arrival forecaster
 eval/              evaluation script and results.json
-tests/             contract test
+tests/             engine contract, engine and API tests
 docs/              PRD, TRD, design
-.streamlit/        theme
 ```
 
 ## Data
