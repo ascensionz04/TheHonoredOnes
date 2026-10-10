@@ -8,15 +8,15 @@ instant press feedback, because the replay re-renders every tick.
 import streamlit as st
 
 TOKENS = {
-    "bg": "#F5F5F7",
+    "bg": "#F3F6F7",
     "card": "#FFFFFF",
-    "fill": "#F2F2F5",
-    "text": "#1D1D1F",
-    "secondary": "#515154",
-    "tertiary": "#6E6E73",
-    "hairline": "rgba(0, 0, 0, 0.08)",
-    "action": "#0066CC",
-    "action_hover": "#0058B0",
+    "fill": "#EEF3F4",
+    "text": "#0F2A33",
+    "secondary": "#3D5359",
+    "tertiary": "#5B6F74",
+    "hairline": "rgba(15, 42, 51, 0.10)",
+    "action": "#0F2A33",
+    "action_hover": "#1C4250",
     "ok": "#1E7B3E",
     "watch": "#A34F00",
     "breach": "#C4161C",
@@ -83,17 +83,17 @@ CSS = """
   background: var(--card); color: var(--text); border: 1px solid var(--hairline);
   box-shadow: var(--shadow-sm);
   transition: transform 100ms ease-out, background-color 150ms ease, box-shadow 150ms ease; }
-.stButton button:hover { background: #FAFAFC; border-color: rgba(0,0,0,0.14); color: var(--text); }
+.stButton button:hover { background: #F7FAFA; border-color: rgba(0,0,0,0.14); color: var(--text); }
 .stButton button:active { transform: scale(0.97); }
-.stButton button:focus-visible { outline: 3px solid rgba(0,102,204,0.35); outline-offset: 2px; }
+.stButton button:focus-visible { outline: 3px solid rgba(15,42,51,0.30); outline-offset: 2px; }
 .stButton button[data-testid="stBaseButton-primary"] {
   background: var(--action); color: #FFFFFF; border: none; padding: 0.6rem 1.5rem;
-  font-size: 1.02rem; box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 14px rgba(0,102,204,0.25); }
+  font-size: 1.02rem; box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 14px rgba(15,42,51,0.22); }
 .stButton button[data-testid="stBaseButton-primary"]:hover { background: var(--action-hover); color: #FFFFFF; }
 [data-testid="stSelectbox"] [data-baseweb="select"] > div {
   border-radius: 12px; background: var(--card); border-color: var(--hairline);
   box-shadow: var(--shadow-sm); font-weight: 500; }
-[data-baseweb="button-group"] { background: #E8E8ED; padding: 3px; border-radius: 12px;
+[data-baseweb="button-group"] { background: #E1E9EB; padding: 3px; border-radius: 12px;
                                 flex-wrap: nowrap; gap: 2px; }
 [data-baseweb="button-group"] button {
   flex: 1 1 0; min-width: 0; min-height: 2.15rem; padding: 0.2rem 0.55rem; border: none;
@@ -109,7 +109,7 @@ CSS = """
 /* ---------- patient flow strip ---------- */
 .flow { display: grid; align-items: stretch; gap: 0;
         grid-template-columns: 1fr 18px 1fr 18px 1fr 18px 1fr 18px 1fr; }
-.chev { display: flex; align-items: center; justify-content: center; color: #C7C7CC; }
+.chev { display: flex; align-items: center; justify-content: center; color: #B5C3C6; }
 .chev svg { width: 12px; height: 12px; }
 .chev.branch { font-size: 0.7rem; font-weight: 600; color: var(--tertiary); }
 .tile { position: relative; overflow: hidden; background: var(--card); border-radius: 16px;
@@ -209,7 +209,7 @@ CSS = """
 .stat-num.before { color: var(--tertiary); }
 .stat-num.after { color: var(--ok); }
 .stat-cap { font-size: 0.72rem; color: var(--tertiary); margin-top: 0.2rem; }
-.compare .to { color: #C7C7CC; }
+.compare .to { color: #B5C3C6; }
 
 /* ---------- also watching: grouped list ---------- */
 .st-key-watching { gap: 0; background: var(--card); border-radius: 16px; overflow: hidden;
@@ -222,8 +222,8 @@ CSS = """
 .st-key-watching .stButton button > div { justify-content: flex-start; width: 100%%; }
 .st-key-watching .stButton button p { text-align: left; }
 .st-key-watching .stButton button::after { content: "\\203A"; margin-left: auto; padding-left: 0.75rem;
-                                           font-size: 1.35rem; line-height: 1; color: #C7C7CC; }
-.st-key-watching .stButton button:hover { background: #FAFAFC; }
+                                           font-size: 1.35rem; line-height: 1; color: #B5C3C6; }
+.st-key-watching .stButton button:hover { background: #F7FAFA; }
 .st-key-watching .stButton button:active { transform: none; background: var(--fill); }
 
 /* ---------- trust ---------- */
@@ -250,7 +250,7 @@ CSS = """
   .st-key-toolbar { background: var(--card); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
 @media (prefers-contrast: more) {
-  :root { --hairline: rgba(0,0,0,0.45); --tertiary: #3A3A3C; --secondary: #1D1D1F; }
+  :root { --hairline: rgba(0,0,0,0.45); --tertiary: #2E4248; --secondary: #0F2A33; }
   .st-key-toolbar { background: var(--card); }
 }
 </style>

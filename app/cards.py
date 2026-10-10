@@ -383,17 +383,17 @@ def render_why(alert):
     df = pd.DataFrame(rows)
     base = alt.Chart(df).encode(
         x=alt.X("Minutes:Q", title="Minutes of expected wait explained",
-                axis=alt.Axis(tickMinStep=1, grid=False, domain=False, tickColor="#D2D2D7")),
+                axis=alt.Axis(tickMinStep=1, grid=False, domain=False, tickColor="#C9D4D6")),
         y=alt.Y("Cause:N", title=None, sort=None, axis=alt.Axis(domain=False, ticks=False)),
         tooltip=[alt.Tooltip("Cause:N"), alt.Tooltip("Minutes:Q", title="Minutes")],
     )
-    bars = base.mark_bar(color="#8E8E93", cornerRadiusEnd=4, height=16)
-    labels = base.mark_text(align="left", dx=6, color="#1D1D1F",
+    bars = base.mark_bar(color="#7C8F94", cornerRadiusEnd=4, height=16)
+    labels = base.mark_text(align="left", dx=6, color="#0F2A33",
                             fontWeight=600).encode(text="Minutes:Q")
     chart = ((bars + labels).properties(height=118)
              .configure(background="transparent", font=CHART_FONT)
              .configure_view(stroke=None)
-             .configure_axis(labelColor="#6E6E73", titleColor="#6E6E73",
+             .configure_axis(labelColor="#5B6F74", titleColor="#5B6F74",
                              labelFontSize=12, titleFontSize=11, titleFontWeight=500))
     st.altair_chart(chart, width="stretch")
     html(f"<p class='fineprint'>{esc(bars_sentence(alert))}</p>")

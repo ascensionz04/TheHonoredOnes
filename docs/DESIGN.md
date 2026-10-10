@@ -220,20 +220,20 @@ The look follows Apple's interface conventions, adapted for the web: white cards
 
 | Role | Hex | Used for |
 | --- | --- | --- |
-| Page | `#F5F5F7` | Background behind the cards |
+| Page | `#F3F6F7` | Background behind the cards |
 | Card | `#FFFFFF` | Station tiles, action card, lists, expanders |
-| Fill | `#F2F2F5` | Inset boxes inside the card (expected effect) |
-| Hairline | `rgba(0,0,0,0.08)` | Card outlines and row separators |
-| Text | `#1D1D1F` | Headings, action sentence, numbers |
-| Secondary text | `#515154` | Card sentences, station names |
-| Tertiary text | `#6E6E73` | Labels, captions, assumptions |
-| Action | `#0066CC` | Apply button, action card ring, focused station tile |
+| Fill | `#EEF3F4` | Inset boxes inside the card (expected effect) |
+| Hairline | `rgba(15,42,51,0.10)` | Card outlines and row separators |
+| Text | `#0F2A33` | Headings, action sentence, numbers |
+| Secondary text | `#3D5359` | Card sentences, station names |
+| Tertiary text | `#5B6F74` | Labels, captions, assumptions |
+| Action | `#0F2A33` | Apply button, action card ring, focused station tile |
 | OK | `#1E7B3E` | `ok` status, improved outcome figure |
 | Watch | `#A34F00` | `watch` status, "no move helps" box |
 | Breach | `#C4161C` | `will breach` status, deadline badge |
 | Over limit | `#8E0F14` | `over limit` status (solid badge, white text) |
 
-Colour carries status only, plus the action blue for the one thing to do. A red word always means something. Status badges are tinted pills with a dot and the word; `over limit` is a solid pill so it differs from `will breach` by shape as well as shade. If you change these values, check that text remains legible against its background.
+Colour carries status only, plus the dark teal action colour for the one thing to do. A red word always means something. Status badges are tinted pills with a dot and the word; `over limit` is a solid pill so it differs from `will breach` by shape as well as shade. If you change these values, check that text remains legible against its background.
 
 ### 6.2 Type and spacing
 
@@ -265,10 +265,10 @@ Cards use 16–22 px corner radius and a soft two-layer shadow; the action card 
 ```toml
 [theme]
 base = "light"
-primaryColor = "#0066CC"
-backgroundColor = "#F5F5F7"
-secondaryBackgroundColor = "#FFFFFF"
-textColor = "#1D1D1F"
+primaryColor = "#0F2A33"
+backgroundColor = "#F3F6F7"
+secondaryBackgroundColor = "#EEF3F4"
+textColor = "#0F2A33"
 font = "sans serif"
 ```
 
