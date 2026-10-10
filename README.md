@@ -57,6 +57,7 @@ Run commands from the repository root.
 | Run the app | `streamlit run app/streamlit_app.py` |
 | Regenerate all results | `python eval/run_eval.py` |
 | Check the engine contract | `python -m pytest tests/` |
+| Check a prepared CSV | `python engine/calibrate.py check data/raw/HospitalOPD-noname.csv` |
 | Rebuild calibration from the real log | `python engine/calibrate.py` |
 
 ### Deploy
@@ -118,6 +119,15 @@ docs/              PRD, TRD, design
 | Simulated clinic days | Training, tuning, testing, what-ifs and the policy comparison |
 
 A real log cannot answer "what if we had moved someone" and has no cause labels, so results come from simulated days: 60 to train, 10 to tune, 20 held out for testing.
+
+Put the raw CSV at `data/raw/HospitalOPD-noname.csv`, or pass its path to the command. The `data/raw/` folder is ignored by git; do not commit raw event logs.
+
+```bash
+python engine/calibrate.py check data/raw/HospitalOPD-noname.csv
+python engine/calibrate.py data/raw/HospitalOPD-noname.csv
+```
+
+Calibration writes only derived summary numbers to `data/calibration.json`. The engine uses that file automatically when `calibration.use` is `true` in `config.yaml`.
 
 _State here whether this build is calibrated on the real log or runs on the assumptions in `config.yaml`._
 

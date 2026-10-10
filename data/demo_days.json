@@ -1,0 +1,6 @@
+[
+  {"name": "Ordinary busy day", "day": 7, "expected_cause": null},
+  {"name": "Doctor called away", "day": 20, "expected_cause": "staffing_gap"},
+  {"name": "Holiday rush", "day": 1, "expected_cause": "demand_surge"},
+  {"name": "Pharmacy system slow", "day": 46, "expected_cause": "slow_processing"}
+]

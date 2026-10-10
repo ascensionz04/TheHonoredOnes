@@ -57,10 +57,10 @@ LIMIT = CFG["wait_limit_min"]
 CLEAR_AT = CFG["alert"]["clear_at"]
 
 DEFAULT_DEMO_DAYS = {
-    "Ordinary busy day": 0,
-    "Doctor called away": 1,
-    "Holiday rush": 2,
-    "Pharmacy system slow": 3,
+    "Ordinary busy day": 7,
+    "Doctor called away": 20,
+    "Holiday rush": 1,
+    "Pharmacy system slow": 46,
 }
 SPEEDS = {"Slow": 1.0, "Normal": 0.5, "Fast": 0.2}  # seconds per 5-minute tick
 
