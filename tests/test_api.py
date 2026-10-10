@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT))
 from fastapi.testclient import TestClient  # noqa: E402
 
 from api.index import app  # noqa: E402
-from presenter import view  # noqa: E402
+from presenter import view, wording  # noqa: E402
 
 client = TestClient(app)
 DAY = "Doctor called away"
@@ -45,6 +45,20 @@ def test_every_step_of_every_demo_day_renders():
             body = r.json()
             assert len(body["stations"]) == 5
             assert body["mode"] in ("calm", "watch", "alert", "closed")
+
+
+def test_surge_sentence_uses_the_engine_ratio():
+    state = {"clock": 690, "stations": {"registration": {"staff_on": 2, "arrivals_30m": 16,
+                                                         "service_min_30m": 4.0}}}
+
+    def why(ratio):
+        alert = {"station": "registration", "cause": "demand_surge",
+                 "facts": {"arrival_ratio": ratio}}
+        return wording.why_sentence(alert, state, view.CFG)
+
+    assert "about 60% above" in why(1.6)
+    assert "about 2 times" in why(2.1)
+    assert "More patients than usual" in why(1.0)
 
 
 def test_apply_changes_the_day():

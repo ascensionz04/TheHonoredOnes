@@ -76,14 +76,6 @@ def staff_noun(station, n):
     return singular if n == 1 else plural
 
 
-def usual_arrivals_30m(cfg, station, clock):
-    """Arrivals the config expects at a station in 30 minutes at this time."""
-    a = cfg["arrivals_per_hour"]
-    peak = minutes_of(a["peak_from"]) <= clock < minutes_of(a["peak_to"])
-    rate = a["peak"] if peak else a["default"]
-    return rate * cfg["stations"][station]["share"] / 2
-
-
 # ---------- sentences ----------
 
 def deadline(alert):
@@ -121,8 +113,9 @@ def why_sentence(alert, state, cfg):
         on = s["staff_on"]
         return f"Cause: staffing gap. {on} of {roster} {staff_noun(station, roster)} are on duty."
     if cause == "demand_surge":
-        usual = usual_arrivals_30m(cfg, station, state["clock"])
-        ratio = s["arrivals_30m"] / usual if usual else 0
+        # Clinic arrivals in the last 30 minutes against the engine's usual level for this
+        # time and weekday (calibrated, so not the assumed rates in config.yaml).
+        ratio = (alert.get("facts") or {}).get("arrival_ratio") or 0
         if ratio >= 1.95:
             fact = f"Arrivals are about {whole(ratio)} times the usual level for this hour."
         elif ratio >= 1.05:
