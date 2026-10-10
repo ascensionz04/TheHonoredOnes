@@ -214,47 +214,61 @@ Filled only with numbers from the engine. One template per case.
 
 ## 6. Visual style
 
+The look follows Apple's interface conventions, adapted for the web: white cards on a light grey page, one translucent toolbar, system type with size-specific tracking, and instant feedback when a control is pressed. All values live in `app/style.py`.
+
 ### 6.1 Colour
 
 | Role | Hex | Used for |
 | --- | --- | --- |
-| Background | `#FFFFFF` | Page |
-| Surface | `#F6F7F9` | Tiles, expanders |
-| Border | `#D9DEE5` | Tile and card outlines |
-| Text | `#1A1F2B` | Body text |
-| Secondary text | `#5B6472` | Captions, replay bar, assumptions |
-| Action | `#1F5FBF` | Apply button, action card border |
-| OK | `#1E7B4F` | `ok` status |
-| Watch | `#B26A00` | `watch` status |
-| Breach | `#C0392B` | `will breach` status |
-| Over limit | `#8E1B1B` | `over limit` status |
+| Page | `#F5F5F7` | Background behind the cards |
+| Card | `#FFFFFF` | Station tiles, action card, lists, expanders |
+| Fill | `#F2F2F5` | Inset boxes inside the card (expected effect) |
+| Hairline | `rgba(0,0,0,0.08)` | Card outlines and row separators |
+| Text | `#1D1D1F` | Headings, action sentence, numbers |
+| Secondary text | `#515154` | Card sentences, station names |
+| Tertiary text | `#6E6E73` | Labels, captions, assumptions |
+| Action | `#0066CC` | Apply button, action card ring, focused station tile |
+| OK | `#1E7B3E` | `ok` status, improved outcome figure |
+| Watch | `#A34F00` | `watch` status, "no move helps" box |
+| Breach | `#C4161C` | `will breach` status, deadline badge |
+| Over limit | `#8E0F14` | `over limit` status (solid badge, white text) |
 
-Colour carries status only. Nothing else on the screen is coloured, so a red word always means something. If you change these values, check that text remains legible against its background.
+Colour carries status only, plus the action blue for the one thing to do. A red word always means something. Status badges are tinted pills with a dot and the word; `over limit` is a solid pill so it differs from `will breach` by shape as well as shade. If you change these values, check that text remains legible against its background.
 
 ### 6.2 Type and spacing
 
+One family throughout: the system font (`-apple-system`, SF Pro on Apple devices, Segoe UI on Windows). Hierarchy comes from weight, size and leading together.
+
 | Element | Treatment |
 | --- | --- |
-| Action sentence | Largest text on screen, bold |
-| Card sentences | Body size |
-| Station names | Bold, body size |
-| Wait values | Body size |
-| Status words | Small, bold, coloured |
-| Replay bar, captions, assumptions | Small, secondary colour |
+| Page title | 2.25 rem, bold, tracking −0.025 em, leading 1.08 |
+| Action sentence | Largest text in the card: up to 2 rem, bold, tracking −0.022 em |
+| Card sentences | 1.04 rem, leading 1.55, secondary colour; "Cause: …" lead-in in bold |
+| Wait values | 1.85 rem, semibold, tabular figures, tracking −0.03 em |
+| Clock | 1.7 rem, semibold, tabular figures |
+| Labels ("DO THIS NOW", "PATIENT FLOW") | 0.72 rem, uppercase, semibold, tracking +0.06 em |
+| Status words | Small tinted pill, semibold |
 
-One font family throughout: the Streamlit default sans-serif. Generous space above and below the action card; tight spacing inside the pathway strip.
+Cards use 16–22 px corner radius and a soft two-layer shadow; the action card has the largest radius and the deepest shadow. Generous space above and below the action card; tight spacing inside the pathway strip.
 
-### 6.3 Theme file
+### 6.3 Materials and motion
+
+- **Toolbar:** the replay bar is a translucent, blurred layer (`backdrop-filter`) that stays at the top while the page scrolls under it.
+- **Press feedback:** buttons scale to 97% on press, within 100 ms. Feedback comes on press, not release.
+- **No motion on replay ticks.** The screen re-renders every 5 simulated minutes, so nothing animates on change, and Streamlit's dimming of stale elements is turned off to avoid flicker.
+- **Preferences:** reduced motion removes press scaling; reduced transparency makes the toolbar solid; increased contrast darkens hairlines and secondary text.
+
+### 6.4 Theme file
 
 `.streamlit/config.toml`:
 
 ```toml
 [theme]
 base = "light"
-primaryColor = "#1F5FBF"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F6F7F9"
-textColor = "#1A1F2B"
+primaryColor = "#0066CC"
+backgroundColor = "#F5F5F7"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1D1D1F"
 font = "sans serif"
 ```
 
@@ -299,7 +313,7 @@ Every step uses a control that is visible without scrolling on a laptop screen, 
 | --- | --- |
 | Page | `st.set_page_config(page_title=..., layout="centered", initial_sidebar_state="collapsed")` |
 | Replay bar | `st.columns` holding `st.selectbox` (day), `st.button` (Play/Pause), `st.select_slider` (speed), `st.markdown` (clock), `st.button` (Reset) |
-| Pathway strip | `st.columns(5)`; each a `st.container(border=True)` with `st.markdown` for name, wait and status |
+| Pathway strip | One `st.markdown` HTML block: a five-column grid of station tiles with chevrons |
 | Status words | Coloured markdown: `:green[ok]`, `:orange[watch]`, `:red[will breach]`, bold `:red[over limit]` |
 | Action card | `st.container(border=True)`; `st.caption` for the header, `st.subheader` for the action, `st.write` for sentences, `st.button(..., type="primary")` for Apply |
 | Why? / What if? | `st.expander`; bars with a small Altair horizontal bar chart |
