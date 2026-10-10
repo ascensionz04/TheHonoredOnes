@@ -1,7 +1,8 @@
 """Service Bottleneck Predictor: the single screen (DESIGN.md).
 
-Zones, top to bottom: replay bar, pathway strip, action card, also watching,
-why trust this. The app imports only the six functions in engine/api.py.
+Zones, top to bottom: header with clinic time, replay controls, pathway strip,
+action card, also watching, why trust this. The app imports only the six
+functions in engine/api.py.
 """
 
 import json
@@ -19,30 +20,14 @@ for p in (ROOT, ROOT / "app"):
         sys.path.insert(0, str(p))
 
 import cards  # noqa: E402
+import style  # noqa: E402
 from cards import STATIONS  # noqa: E402
 
 st.set_page_config(page_title="Bottleneck Predictor", layout="centered",
                    initial_sidebar_state="collapsed")
+style.inject()
 
 DATA_MISSING = "Demo data could not be loaded. Choose another day or press Reset."
-
-st.markdown(f"""
-<style>
-  .block-container {{ padding-top: 2rem; padding-bottom: 3rem; }}
-  .clock {{ font-size: 1.6rem; font-weight: 700; color: {cards.COLOURS['text']};
-            text-align: center; line-height: 2.4rem; }}
-  .tile {{ background: {cards.COLOURS['surface']}; border-radius: 8px;
-           padding: 0.5rem 0.4rem; text-align: center; }}
-  .tile-name {{ font-weight: 700; font-size: 0.9rem; color: {cards.COLOURS['text']}; }}
-  .tile-wait {{ font-size: 0.95rem; color: {cards.COLOURS['text']}; }}
-  .tile-status {{ font-size: 0.8rem; text-transform: none; }}
-  .action {{ font-size: 1.75rem; font-weight: 700; line-height: 1.25;
-             color: {cards.COLOURS['text']}; margin: 0.2rem 0 0.6rem 0; }}
-  .deadline {{ text-align: right; font-weight: 700; color: {cards.COLOURS['text']};
-               font-size: 0.95rem; }}
-  .st-key-action_card {{ border: 2px solid {cards.COLOURS['action']} !important; }}
-</style>
-""", unsafe_allow_html=True)
 
 
 # ---------- loading ----------
@@ -77,7 +62,7 @@ DEFAULT_DEMO_DAYS = {
     "Holiday rush": 2,
     "Pharmacy system slow": 3,
 }
-SPEEDS = {"slow": 1.0, "normal": 0.5, "fast": 0.2}  # seconds per 5-minute tick
+SPEEDS = {"Slow": 1.0, "Normal": 0.5, "Fast": 0.2}  # seconds per 5-minute tick
 
 
 def load_demo_days():
@@ -133,12 +118,14 @@ ss = st.session_state
 ss.setdefault("day", "Doctor called away" if "Doctor called away" in DEMO_DAYS else next(iter(DEMO_DAYS)))
 ss.setdefault("clock", OPEN)
 ss.setdefault("playing", False)
-ss.setdefault("speed", "fast")
+ss.setdefault("speed", "Fast")
 ss.setdefault("actions", ())
 ss.setdefault("applied", [])          # [(label, clock)] for the confirmation line
 ss.setdefault("selected_station", None)
 if ss.day not in DEMO_DAYS:
     ss.day = next(iter(DEMO_DAYS))
+if ss.speed not in SPEEDS:
+    ss.speed = "Fast"
 
 
 def reset():
@@ -165,14 +152,19 @@ def select_station(station):
     ss.selected_station = station
 
 
-# ---------- 1 replay bar ----------
+# ---------- header and 1 replay bar ----------
 
-bar = st.columns([3.2, 1.3, 2.2, 1.4, 1.2], vertical_alignment="bottom")
-bar[0].selectbox("Day", list(DEMO_DAYS), key="day", on_change=reset)
-bar[1].button("Pause" if ss.playing else "Play", on_click=toggle_play, width="stretch")
-bar[2].select_slider("Speed", options=list(SPEEDS), key="speed")
-bar[3].markdown(f"<div class='clock'>{cards.hhmm(ss.clock)}</div>", unsafe_allow_html=True)
-bar[4].button("Reset", on_click=reset, width="stretch")
+cards.html(cards.header_html(LIMIT, ss.clock, ss.playing, CLOSE))
+
+with st.container(key="toolbar"):
+    bar = st.columns([2.5, 1.05, 2.3, 1.05], vertical_alignment="center")
+    bar[0].selectbox("Demo day", list(DEMO_DAYS), key="day", on_change=reset,
+                     label_visibility="collapsed")
+    bar[1].button("Pause" if ss.playing else "Play", on_click=toggle_play, width="stretch",
+                  icon=":material/pause:" if ss.playing else ":material/play_arrow:")
+    bar[2].segmented_control("Speed", list(SPEEDS), key="speed", required=True,
+                             label_visibility="collapsed", width="stretch")
+    bar[3].button("Reset", on_click=reset, width="stretch", icon=":material/restart_alt:")
 
 day = DEMO_DAYS[ss.day]
 actions = tuple(ss.actions)
@@ -204,26 +196,18 @@ def status_of(station):
 # ---------- 2 pathway strip ----------
 
 statuses = {s: status_of(s) for s in STATIONS}
-tiles = st.columns(5, gap="small")
-for col, station in zip(tiles, STATIONS):
-    col.markdown(cards.tile_html(station, state["stations"][station]["wait_now_min"],
-                                 fc[station][30]["wait_p50"], statuses[station],
-                                 highlight=focus is not None and focus["station"] == station),
-                 unsafe_allow_html=True)
-st.caption("Wait now → expected in 30 minutes. Patients move left to right; "
-           "laboratory and imaging are side branches after consultation.")
-
-st.write("")
+cards.section_head("Patient flow", "Wait now, and the trend over the next 30 minutes")
+cards.html(cards.flow_html(state, fc, statuses, focus["station"] if focus else None))
 
 # ---------- 3 action card ----------
 
 if ss.clock >= CLOSE:
     try:
         final = outcome(day, actions)
-        msg = f"Clinic closed. Patients who waited over 30 minutes today: {cards.pct(final['share_over_30'])}%."
+        body = f"Patients who waited over 30 minutes today: {cards.pct(final['share_over_30'])}%."
         if actions:
-            msg += " " + cards.outcome_line(outcome(day, ()), final, len(actions))
-        st.success(msg)
+            body += " " + cards.outcome_line(outcome(day, ()), final, len(actions))
+        cards.state_card("s-closed", "Clinic closed", body)
     except Exception as err:  # noqa: BLE001
         fail(err)
 elif focus is not None:
@@ -236,16 +220,15 @@ else:
     watching = [s for s in STATIONS if statuses[s] == "watch"]
     if watching:
         names = " and ".join(cards.name(s) for s in watching)
-        st.info(f"No action needed yet. Keeping an eye on {names}.")
+        cards.state_card("s-watch", "No action needed yet", f"Keeping an eye on {names}.")
     else:
-        st.success(f"No action needed. All stations are expected to stay under "
-                   f"{LIMIT} minutes for the next hour.")
+        cards.state_card("s-ok", "No action needed",
+                         f"All stations are expected to stay under {LIMIT} minutes for the next hour.")
 
 if ss.applied and ss.clock < CLOSE:
     label, at = ss.applied[-1]
-    st.caption(f"Applied at {cards.hhmm(at)}: {label}.")
     try:
-        st.success(cards.outcome_line(outcome(day, ()), outcome(day, actions), len(actions)))
+        cards.html(cards.applied_html(label, at, outcome(day, ()), outcome(day, actions), len(actions)))
     except Exception as err:  # noqa: BLE001
         fail(err)
 
@@ -253,10 +236,13 @@ if ss.applied and ss.clock < CLOSE:
 
 rest = [a for a in alert_list if focus is None or a["station"] != focus["station"]]
 if rest and ss.clock < CLOSE:
-    st.markdown(f"**Also watching ({len(rest)})**")
-    for a in rest:
-        st.button(cards.watching_line(a), key=f"watch_{a['station']}",
-                  on_click=select_station, args=(a["station"],), width="stretch")
+    cards.section_head(f"Also watching ({len(rest)})")
+    with st.container(key="watching"):
+        for a in rest:
+            status = statuses[a["station"]]
+            with st.container(key=f"wrow_{cards.watching_tone(status)}_{a['station']}"):
+                st.button(cards.watching_label(a, status), key=f"watch_{a['station']}",
+                          on_click=select_station, args=(a["station"],), width="stretch")
 
 # ---------- 5 why trust this? ----------
 
@@ -299,26 +285,30 @@ def trust_statements(r):
     return out
 
 
+st.write("")
 with st.expander("Why trust this?"):
     results = load_results()
     statements = trust_statements(results) if results else []
     if statements:
-        for s in statements:
-            st.markdown(f"- {s}")
+        cards.html(cards.trust_html(statements))
     else:
-        st.write("Test results will appear here once the evaluation has run.")
+        cards.html("<p class='fineprint'>Test results will appear here once the evaluation has run.</p>")
+    notes = []
     if results:
         if results.get("data_mode") == "calibrated":
-            st.caption("What is real: arrival pattern, service times and pathway shares are "
-                       "calibrated on a public outpatient event log.")
+            notes.append("What is real: arrival pattern, service times and pathway shares are "
+                         "calibrated on a public outpatient event log.")
         else:
-            st.caption("What is assumed: arrival pattern, service times and staff numbers are "
-                       "stated assumptions, not measured from a real clinic.")
-        st.caption("What is simulated: results are from 20 simulated test days not used to build the model.")
-        for a in results.get("assumptions") or []:
-            st.caption(f"Assumption: {a}")
-    if getattr(api.get_state, "__module__", "") == "engine.mock":
-        st.caption("Demo numbers: the live engine is not connected yet, so this replay is illustrative.")
+            notes.append("What is assumed: arrival pattern, service times and staff numbers are "
+                         "stated assumptions, not measured from a real clinic.")
+        notes.append("What is simulated: results are from 20 simulated test days not used to build the model.")
+        notes += [f"Assumption: {a}" for a in results.get("assumptions") or []]
+    for n in notes:
+        cards.html(f"<p class='fineprint'>{cards.esc(n)}</p>")
+
+if getattr(api.get_state, "__module__", "") == "engine.mock":
+    cards.html("<p class='footnote'>Demo numbers: the live engine is not connected yet, "
+               "so this replay is illustrative.</p>")
 
 
 # ---------- replay loop ----------

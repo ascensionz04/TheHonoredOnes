@@ -5,6 +5,8 @@ whole numbers, "chance" not "probability", no model terms, three sentences at
 most above the Apply button, always say what happens next.
 """
 
+from html import escape
+
 import altair as alt
 import pandas as pd
 import streamlit as st
@@ -36,16 +38,21 @@ ACTION_GERUND = {
     "fast_track_pharmacy": "Fast-tracking repeat prescriptions",
 }
 
-COLOURS = {
-    "text": "#1A1F2B",
-    "secondary": "#5B6472",
-    "surface": "#F6F7F9",
-    "border": "#D9DEE5",
-    "action": "#1F5FBF",
-    "ok": "#1E7B4F",
-    "watch": "#B26A00",
-    "will breach": "#C0392B",
-    "over limit": "#8E1B1B",
+STATUS_CLASS = {"ok": "s-ok", "watch": "s-watch", "will breach": "s-breach",
+                "over limit": "s-over"}
+
+CHART_FONT = "Public Sans, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif"
+
+# Small line icons, drawn in currentColor.
+_SVG = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{w}" '
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{d}</svg>')
+ICONS = {
+    "check": _SVG.format(w=2.6, d='<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+    "eye": _SVG.format(w=2, d='<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/>'
+                               '<circle cx="12" cy="12" r="3"/>'),
+    "clock": _SVG.format(w=2.2, d='<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+    "moon": _SVG.format(w=2, d='<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'),
+    "chevron": _SVG.format(w=2.6, d='<path d="M9 5l7 7-7 7"/>'),
 }
 
 
@@ -168,7 +175,11 @@ def effect_sentence(action, station, fc, cfg):
              f"{whole(action['wait_saved_min'])} minutes."]
     donor = action.get("donor_station")
     if donor:
-        parts.append(f"It adds about {whole(action['donor_wait_added_min'])} minutes at {donor}.")
+        added = whole(action["donor_wait_added_min"])
+        if added >= 1:
+            parts.append(f"It adds about {added} minutes at {donor}.")
+        else:
+            parts.append(f"It adds no noticeable wait at {donor}.")
     parts.append(next_sentence(action.get("bottleneck_after"), station, fc, cfg))
     return " ".join(parts)
 
@@ -226,6 +237,127 @@ def outcome_line(without, with_, n_actions):
 
 # ---------- rendering ----------
 
+STATUS_WORD = {"ok": "OK", "watch": "Watch", "will breach": "Will breach", "over limit": "Over limit"}
+INK, MUTED_BAR, LABEL = "#0F2A33", "#B9C7CC", "#566B73"
+
+
+def html(markup):
+    st.markdown(markup, unsafe_allow_html=True)
+
+
+def esc(text):
+    return escape(str(text), quote=False)
+
+
+def header_html(limit, clock=None, playing=False, close=None):
+    """Product name and purpose on the left, clinic time on the right."""
+    clock_part = ""
+    if clock is not None:
+        if close is not None and clock >= close:
+            mode, mode_cls = "Clinic closed", "closed"
+        elif playing:
+            mode, mode_cls = "Replaying", "live"
+        else:
+            mode, mode_cls = "Paused", "paused"
+        clock_part = (
+            "<div class='hd-clock'>"
+            f"<span class='hd-time num' aria-label='Clinic time {hhmm(clock)}'>{hhmm(clock)}</span>"
+            f"<span class='hd-mode {mode_cls}'>{mode}</span></div>"
+        )
+    return (
+        "<div class='hd'><div class='hd-text'>"
+        "<div class='hd-title'>Bottleneck Predictor</div>"
+        f"<p class='hd-sub'>Which outpatient station will pass the {limit}-minute limit "
+        "in the next hour, why, and the staff move that prevents it.</p>"
+        f"</div>{clock_part}</div>"
+    )
+
+
+def clock_html(clock):
+    """Kept for compatibility; the clock now sits in the header."""
+    return f"<span class='hd-time num'>{hhmm(clock)}</span>"
+
+
+def section_head(title, legend=""):
+    right = f"<span class='sec-legend'>{esc(legend)}</span>" if legend else ""
+    html(f"<div class='sec'><span class='sec-title' role='heading' aria-level='2'>{esc(title)}</span>"
+         f"{right}</div>")
+
+
+def _trend(now, later, clock):
+    if abs(later - now) < 5:
+        return "Steady for 30 min"
+    word = "Rising" if later > now else "Falling"
+    return f"{word} to {later} min by {hhmm(clock + 30)}"
+
+
+def _stop(station, wait_now, wait_30, status, focus, clock, small=False):
+    now, later = whole(wait_now), whole(wait_30)
+    cls = STATUS_CLASS[status]
+    extra = (" is-focus" if focus else "") + (" is-branch" if small else "")
+    return (
+        f"<div class='stop {cls}{extra}' role='listitem'>"
+        f"<div class='stop-name'>{name(station)}</div>"
+        f"<div class='stop-wait'><span class='num'>{now}</span><span class='unit'>min</span></div>"
+        f"<div class='stop-trend'>{_trend(now, later, clock)}</div>"
+        f"<div class='stop-status'>{STATUS_WORD[status]}</div>"
+        "</div>"
+    )
+
+
+def flow_html(state, fc, statuses, focus_station):
+    """Stations in the order patients move. Laboratory and imaging are side
+    branches after consultation: a patient may visit either, both or neither."""
+    clock = state["clock"]
+
+    def stop(station, small=False):
+        return _stop(station, state["stations"][station]["wait_now_min"],
+                     fc[station][30]["wait_p50"], statuses[station],
+                     station == focus_station, clock, small)
+
+    return (
+        "<div class='route' role='list' aria-label='Stations in the order patients move'>"
+        f"{stop('registration')}{stop('consultation')}"
+        f"<div class='branch' role='none'>{stop('laboratory', True)}{stop('imaging', True)}</div>"
+        f"{stop('pharmacy')}</div>"
+    )
+
+
+def state_card(kind, title, body):
+    icon = {"s-ok": "check", "s-watch": "eye", "s-closed": "moon"}[kind]
+    html(f"<div class='note {kind}'><div class='note-icon'>{ICONS[icon]}</div>"
+         f"<div><div class='note-title'>{esc(title)}</div>"
+         f"<div class='note-body'>{esc(body)}</div></div></div>")
+
+
+def applied_html(label, at, without, with_, n_actions):
+    which = "this action" if n_actions == 1 else "these actions"
+    after = "with it" if n_actions == 1 else "with them"
+    return (
+        "<div class='applied'>"
+        f"<div class='applied-line'><span class='applied-icon'>{ICONS['check']}</span>"
+        f"<span><strong>Applied at {hhmm(at)}.</strong> {esc(label)}.</span></div>"
+        "<div class='compare'>"
+        "<div class='compare-label'>Patients waiting over 30 minutes today</div>"
+        f"<div class='cmp'><div class='cmp-num before num'>{pct(without['share_over_30'])}%</div>"
+        f"<div class='cmp-cap'>without {which}</div></div>"
+        f"<div class='cmp'><div class='cmp-num after num'>{pct(with_['share_over_30'])}%</div>"
+        f"<div class='cmp-cap'>{after}</div></div>"
+        "</div></div>"
+    )
+
+
+def _bold_cause(sentence):
+    """Make the 'Cause: x.' lead-in stand out."""
+    for lead in ("Cause:", "Causes:"):
+        if sentence.startswith(lead):
+            head, _, rest = sentence.partition(". ")
+            if rest:
+                return f"<strong>{esc(head)}.</strong> {esc(rest)}"
+            return f"<strong>{esc(sentence)}</strong>"
+    return esc(sentence)
+
+
 def render_action_card(alert, state, fc, recs, cfg, on_apply):
     """The 'Do this now' card. `recs` is recommend() for this station."""
     clock = state["clock"]
@@ -233,70 +365,79 @@ def render_action_card(alert, state, fc, recs, cfg, on_apply):
     station = alert["station"]
     action = alert.get("top_action")
     helps = action_helps(action)
+    title = esc(action["label"]) + "." if helps else "Warn waiting patients."
+    tone = "urgent" if helps else "warn"
 
-    with st.container(border=True, key="action_card"):
-        left, right = st.columns([3, 2])
-        left.caption("**DO THIS NOW**")
-        right.markdown(f"<div class='deadline'>{deadline(alert)}</div>", unsafe_allow_html=True)
-
-        if helps:
-            st.markdown(f"<div class='action'>{action['label']}.</div>", unsafe_allow_html=True)
-        else:
-            st.markdown("<div class='action'>Warn waiting patients.</div>", unsafe_allow_html=True)
-
-        sentences = [what_sentence(alert, clock, limit), why_sentence(alert, state, cfg)]
+    with st.container(key="action_card"):
+        sentences = [esc(what_sentence(alert, clock, limit)),
+                     _bold_cause(why_sentence(alert, state, cfg))]
         if alert.get("cause") != "peak_load":
-            sentences.append(affected_sentence(alert))
-        st.write(" ".join(s for s in sentences if s))
+            sentences.append(esc(affected_sentence(alert)))
+        html(f"<div class='band tone-{tone}'><span class='band-label'>Do this now</span>"
+             f"<span class='band-deadline'>{ICONS['clock']}{deadline(alert).capitalize()}</span></div>"
+             f"<div class='action-title'>{title}</div>"
+             f"<p class='card-body'>{' '.join(s for s in sentences if s)}</p>")
 
         if helps:
-            st.button("Apply", type="primary", key=f"apply_{station}_{clock}",
-                      on_click=on_apply, args=(action, clock))
-            st.write(effect_sentence(action, station, fc, cfg))
+            st.button("Apply", type="primary", icon=":material/check:",
+                      key=f"apply_{station}_{clock}", on_click=on_apply, args=(action, clock))
+            html("<div class='inset'><div class='inset-label'>Expected effect</div>"
+                 f"<p>{esc(effect_sentence(action, station, fc, cfg))}</p></div>")
         else:
-            st.warning(no_move_sentence(alert, fc))
+            html("<div class='inset warn'><div class='inset-label'>No move helps</div>"
+                 f"<p>{esc(no_move_sentence(alert, fc))}</p></div>")
 
-    with st.expander("Why?"):
-        render_why(alert)
-    others = [r for r in recs if helps and r["action_id"] != action["action_id"]]
-    if others:
-        with st.expander("What if?"):
-            for r in others:
-                st.write(what_if_line(r, station))
+        with st.expander("Why?"):
+            render_why(alert)
+        others = [r for r in recs if helps and r["action_id"] != action["action_id"]]
+        if others:
+            with st.expander("What if?"):
+                items = "".join(f"<li>{_what_if_html(r, station)}</li>" for r in others)
+                html(f"<ul class='whatif'>{items}</ul>")
+
+
+def _what_if_html(action, station):
+    head, _, rest = what_if_line(action, station).partition(": ")
+    return f"<strong>{esc(head)}</strong>: {esc(rest)}"
 
 
 def render_why(alert):
     contrib = alert.get("contributions") or {}
-    rows = [{"Cause": CAUSE_NAMES[k].capitalize(),
-             "Minutes": max(0, whole(contrib.get(k, 0)))}
-            for k in ("demand_surge", "staffing_gap", "slow_processing")]
+    keys = ("demand_surge", "staffing_gap", "slow_processing")
+    minutes = {k: max(0, whole(contrib.get(k, 0))) for k in keys}
+    top = max(minutes.values())
+    rows = [{"Cause": CAUSE_NAMES[k].capitalize(), "Minutes": minutes[k],
+             "Colour": INK if top and minutes[k] == top else MUTED_BAR}
+            for k in keys]
     df = pd.DataFrame(rows)
-    chart = (
-        alt.Chart(df)
-        .mark_bar(color=COLOURS["secondary"], cornerRadiusEnd=4, height=18)
-        .encode(
-            x=alt.X("Minutes:Q", title="Minutes of expected wait explained",
-                    axis=alt.Axis(tickMinStep=1, grid=False)),
-            y=alt.Y("Cause:N", title=None, sort=None),
-            tooltip=[alt.Tooltip("Cause:N"), alt.Tooltip("Minutes:Q", title="Minutes")],
-        )
-        .properties(height=120)
+    base = alt.Chart(df).encode(
+        x=alt.X("Minutes:Q", title="Minutes of expected wait explained",
+                axis=alt.Axis(tickMinStep=1, tickCount=5, grid=False, domain=False,
+                              tickColor="#D9E2E5")),
+        y=alt.Y("Cause:N", title=None, sort=None, scale=alt.Scale(paddingInner=0.45),
+                axis=alt.Axis(domain=False, ticks=False, labelOverlap=False, labelPadding=8,
+                              labelLimit=160)),
+        tooltip=[alt.Tooltip("Cause:N"), alt.Tooltip("Minutes:Q", title="Minutes")],
     )
-    labels = chart.mark_text(align="left", dx=4, color=COLOURS["text"]).encode(text="Minutes:Q")
-    st.altair_chart(chart + labels, width="stretch")
-    st.write(bars_sentence(alert))
+    bars = base.mark_bar(cornerRadiusEnd=3).encode(color=alt.Color("Colour:N", scale=None))
+    labels = base.mark_text(align="left", dx=6, color=INK, fontWeight=600).encode(text="Minutes:Q")
+    chart = ((bars + labels).properties(height=alt.Step(30))
+             .configure(background="transparent", font=CHART_FONT)
+             .configure_view(stroke=None)
+             .configure_axis(labelColor=LABEL, titleColor=LABEL,
+                             labelFontSize=12, titleFontSize=11, titleFontWeight=500))
+    st.altair_chart(chart, width="stretch")
+    html(f"<p class='fineprint'>{esc(bars_sentence(alert))}</p>")
 
 
-def tile_html(station, wait_now, wait_30, status, highlight):
-    now = whole(wait_now)
-    later = whole(wait_30)
-    wait = f"{now} → {later} min" if abs(later - now) >= 5 else f"{now} min"
-    border = f"2px solid {COLOURS['action']}" if highlight else f"1px solid {COLOURS['border']}"
-    weight = "800" if status == "over limit" else "700"
-    return (
-        f"<div class='tile' style='border:{border}'>"
-        f"<div class='tile-name'>{name(station)}</div>"
-        f"<div class='tile-wait'>{wait}</div>"
-        f"<div class='tile-status' style='color:{COLOURS[status]};font-weight:{weight}'>{status}</div>"
-        f"</div>"
-    )
+def watching_tone(status):
+    return "breach" if status in ("will breach", "over limit") else "watch"
+
+
+def watching_label(alert, status):
+    """Plain label; the status dot is drawn by CSS from the row's tone."""
+    return watching_line(alert)
+
+
+def trust_html(statements):
+    return "<ul class='trust'>" + "".join(f"<li>{esc(s)}</li>" for s in statements) + "</ul>"
